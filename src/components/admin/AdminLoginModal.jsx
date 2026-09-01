@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
-import { Lock, KeyRound, ShieldCheck, X, AlertCircle } from 'lucide-react';
+import { Lock, X, AlertCircle } from 'lucide-react';
 
 export const AdminLoginModal = () => {
   const { 
@@ -9,10 +9,16 @@ export const AdminLoginModal = () => {
     setIsAdminLoggedIn,
     setActiveAdminRole,
     setActiveTab,
-    specialAdminCodes
+    validPasscodes = [
+      'Pushk@26',
+      'Admi#202',
+      'Gate$999',
+      'Auth*777',
+      'Ghat!123'
+    ]
   } = useApp();
 
-  const [officerCode, setOfficerCode] = useState('');
+  const [username, setUsername] = useState('');
   const [passcode, setPasscode] = useState('');
   const [loginError, setLoginError] = useState(null);
 
@@ -22,27 +28,22 @@ export const AdminLoginModal = () => {
     e?.preventDefault();
     setLoginError(null);
 
-    const cleanCode = officerCode.trim().toUpperCase();
     const cleanPass = passcode.trim();
 
-    const matched = specialAdminCodes.find(
-      c => c.code.toUpperCase() === cleanCode && c.passcode === cleanPass
-    );
-
-    if (matched) {
-      setActiveAdminRole(matched.role);
+    if (validPasscodes.includes(cleanPass)) {
+      setActiveAdminRole(username.trim() || 'Officer');
       setIsAdminLoggedIn(true);
       setShowAdminLoginModal(false);
       setActiveTab('admin');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
-      setLoginError('Invalid Officer ID or Security Passcode. Please enter authorized credentials.');
+      setLoginError('Invalid Passcode. Please enter a valid 8-character security passcode.');
     }
   };
 
   return (
     <div className="modal-overlay" onClick={() => setShowAdminLoginModal(false)}>
-      <div className="modal-content" style={{ maxWidth: '540px' }} onClick={(e) => e.stopPropagation()}>
+      <div className="modal-content" style={{ maxWidth: '480px' }} onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <div style={{ width: '34px', height: '34px', borderRadius: '8px', background: 'var(--gov-green-900)', color: '#D4AF37', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -59,54 +60,33 @@ export const AdminLoginModal = () => {
         </div>
 
         <div className="modal-body">
-          {/* Official Authorized Credentials Reference (No 1-step shortcuts) */}
-          <div style={{ backgroundColor: 'var(--gov-green-25)', border: '1.5px solid var(--gov-green-200)', borderRadius: 'var(--radius-lg)', padding: '1rem', marginBottom: '1.25rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--gov-green-900)', fontWeight: '800', fontSize: '0.85rem', marginBottom: '0.5rem' }}>
-              <KeyRound size={16} />
-              <span>Official Government Access Credentials:</span>
-            </div>
-            
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', fontSize: '0.8rem' }}>
-              <div style={{ background: '#FFFFFF', padding: '0.4rem 0.65rem', borderRadius: '4px', border: '1px solid var(--slate-200)' }}>
-                <strong>Super Admin:</strong> ID: <code>AP-ADMIN-2026</code> • Pass: <code>PUSHKARA@2026</code>
-              </div>
-              <div style={{ background: '#FFFFFF', padding: '0.4rem 0.65rem', borderRadius: '4px', border: '1px solid var(--slate-200)' }}>
-                <strong>Verification Officer:</strong> ID: <code>VERIFY-OFFICER-01</code> • Pass: <code>VERIFY@2026</code>
-              </div>
-              <div style={{ background: '#FFFFFF', padding: '0.4rem 0.65rem', borderRadius: '4px', border: '1px solid var(--slate-200)' }}>
-                <strong>Gate Security Officer:</strong> ID: <code>GATE-OFFICER-01</code> • Pass: <code>GATE@2026</code>
-              </div>
-            </div>
-          </div>
-
           <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label className="form-label" htmlFor="admin-username">
-                Officer ID / Username <span className="req">*</span>
+            <div className="form-group" style={{ marginBottom: '1.25rem' }}>
+              <label className="form-label" htmlFor="modal-username">
+                Username / Officer Name
               </label>
               <input
-                id="admin-username"
+                id="modal-username"
                 type="text"
                 className="form-input"
-                placeholder="Enter official ID (e.g. AP-ADMIN-2026)"
-                value={officerCode}
+                placeholder="Enter any name (e.g. Kishore, Officer, Admin)"
+                value={username}
                 onChange={(e) => {
-                  setOfficerCode(e.target.value);
+                  setUsername(e.target.value);
                   if (loginError) setLoginError(null);
                 }}
-                required
               />
             </div>
 
-            <div className="form-group">
-              <label className="form-label" htmlFor="admin-password">
-                Security Passcode <span className="req">*</span>
+            <div className="form-group" style={{ marginBottom: '1.5rem' }}>
+              <label className="form-label" htmlFor="modal-password">
+                Security Passcode (8 Characters) <span className="req">*</span>
               </label>
               <input
-                id="admin-password"
+                id="modal-password"
                 type="password"
                 className="form-input"
-                placeholder="Enter security passcode"
+                placeholder="Enter 8-character passcode"
                 value={passcode}
                 onChange={(e) => {
                   setPasscode(e.target.value);
@@ -126,11 +106,11 @@ export const AdminLoginModal = () => {
             <button 
               type="submit" 
               className="btn btn-primary"
-              style={{ width: '100%', padding: '0.85rem' }}
-              id="admin-submit-login-btn"
+              style={{ width: '100%', padding: '0.9rem', fontSize: '1rem' }}
+              id="modal-submit-login-btn"
             >
               <Lock size={18} />
-              <span>Verify & Access Admin Command</span>
+              <span>Access Admin Command</span>
             </button>
           </form>
         </div>

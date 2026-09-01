@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { LOCATIONS, CATEGORIES, ASSISTANCE_TYPES } from '../data/locationsData';
 import { TIME_SLOTS } from '../data/timeSlotsData';
-import { INITIAL_TOKENS, SPECIAL_ADMIN_CODES } from '../data/initialTokens';
+import { INITIAL_TOKENS, VALID_ADMIN_PASSCODES } from '../data/initialTokens';
 
 const AppContext = createContext();
 
@@ -351,7 +351,7 @@ export const AppProvider = ({ children }) => {
         setActiveAdminRole,
         showAdminLoginModal,
         setShowAdminLoginModal,
-        specialAdminCodes: SPECIAL_ADMIN_CODES,
+        validPasscodes: VALID_ADMIN_PASSCODES,
         fontScale,
         setFontScale,
         isHighContrast,
