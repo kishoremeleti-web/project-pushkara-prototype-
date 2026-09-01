@@ -10,11 +10,11 @@ export const AdminLoginModal = () => {
     setActiveAdminRole,
     setActiveTab,
     validPasscodes = [
-      'Pushk@26',
-      'Admi#202',
-      'Gate$999',
-      'Auth*777',
-      'Ghat!123'
+      'K9#mQ7$vX2',
+      'p8!Tx4&W9z',
+      'J3@bY6*nE5',
+      'Z7%hR2#kM9',
+      'd4$Vw8!L1q'
     ]
   } = useApp();
 
@@ -37,7 +37,7 @@ export const AdminLoginModal = () => {
       setActiveTab('admin');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
-      setLoginError('Invalid Passcode. Please enter a valid 8-character security passcode.');
+      setLoginError('Invalid Passcode. Please enter an authorized 10-character security passcode.');
     }
   };
 
@@ -80,13 +80,13 @@ export const AdminLoginModal = () => {
 
             <div className="form-group" style={{ marginBottom: '1.5rem' }}>
               <label className="form-label" htmlFor="modal-password">
-                Security Passcode (8 Characters) <span className="req">*</span>
+                Security Passcode (10 Characters) <span className="req">*</span>
               </label>
               <input
                 id="modal-password"
                 type="password"
                 className="form-input"
-                placeholder="Enter 8-character passcode"
+                placeholder="Enter 10-character passcode"
                 value={passcode}
                 onChange={(e) => {
                   setPasscode(e.target.value);
