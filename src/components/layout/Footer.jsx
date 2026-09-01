@@ -99,11 +99,23 @@ export const Footer = () => {
           </div>
         </div>
 
-        <div className="footer-bottom">
-          <p>© 2026 Pushkaralu Digi Token Prototype • Godavari Pushkara Ghat Priority Management System</p>
-          <p style={{ marginTop: '0.25rem', fontSize: '0.75rem', color: '#94A3B8' }}>
-            Designed for high accessibility, elder ease-of-use, and fast crowd distribution across 45 sacred ghats.
-          </p>
+        <div className="footer-bottom" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+          <div>
+            <p>© 2026 Pushkaralu Digi Token Prototype • Godavari Pushkara Ghat Priority Management System</p>
+            <p style={{ marginTop: '0.25rem', fontSize: '0.75rem', color: '#94A3B8' }}>
+              Designed for high accessibility, elder ease-of-use, and fast crowd distribution across 45 sacred ghats.
+            </p>
+          </div>
+          <div>
+            <a 
+              href="#admin" 
+              onClick={(e) => { e.preventDefault(); setActiveTab('admin'); window.location.hash = 'admin'; window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              style={{ fontSize: '0.75rem', color: 'rgba(212, 175, 55, 0.8)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.3rem', fontWeight: '700' }}
+            >
+              <Shield size={12} />
+              <span>Officer Command Login</span>
+            </a>
+          </div>
         </div>
       </div>
     </footer>

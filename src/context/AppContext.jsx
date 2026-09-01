@@ -22,9 +22,21 @@ export const AppProvider = ({ children }) => {
   const [currentPassToken, setCurrentPassToken] = useState(null);
 
   // Admin Session
-  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(isPortAdmin);
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
   const [activeAdminRole, setActiveAdminRole] = useState('Super Administrator');
   const [showAdminLoginModal, setShowAdminLoginModal] = useState(false);
+
+  // Hash listener for #admin direct URL navigation
+  useEffect(() => {
+    const handleHash = () => {
+      if (window.location.hash === '#admin' || window.location.pathname.startsWith('/admin')) {
+        setActiveTab('admin');
+      }
+    };
+    handleHash();
+    window.addEventListener('hashchange', handleHash);
+    return () => window.removeEventListener('hashchange', handleHash);
+  }, []);
 
   // Accessibility States
   const [fontScale, setFontScale] = useState('normal'); // 'normal' | 'lg' | 'xl'
