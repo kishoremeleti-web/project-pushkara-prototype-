@@ -25,6 +25,7 @@ export const StepWizard = () => {
     registrationLocation, 
     categories, 
     locations, 
+    tokens,
     validateEligibility, 
     issueToken,
     setActiveTab
@@ -46,7 +47,10 @@ export const StepWizard = () => {
 
   const [errors, setErrors] = useState({});
   const [isDocVerified, setIsDocVerified] = useState(false);
-  const [generatedToken, setGeneratedToken] = useState(null);
+  const [generatedTokenId, setGeneratedTokenId] = useState(null);
+
+  // Live lookup of token from state so when admin approves, it automatically updates to Verified with QR code
+  const generatedToken = tokens.find(t => t.id === generatedTokenId || t.tokenNumber === generatedTokenId);
 
   // Sync category or location if pre-selected externally
   useEffect(() => {
@@ -96,19 +100,19 @@ export const StepWizard = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Step 3 Validation (Document verification complete)
+  // Step 3 Validation (Time slot selection)
   const validateStep3 = () => {
-    if (!isDocVerified) {
-      alert('Please complete the simulated document verification before proceeding.');
+    if (!formData.slotId) {
+      alert('Please select an available morning time slot.');
       return false;
     }
     return true;
   };
 
-  // Step 4 Validation (Time slot selection)
+  // Step 4 Validation (Document upload attached)
   const validateStep4 = () => {
-    if (!formData.slotId) {
-      alert('Please select an available morning time slot.');
+    if (!isDocVerified) {
+      alert('Please attach your verification document before proceeding.');
       return false;
     }
     return true;
@@ -124,9 +128,9 @@ export const StepWizard = () => {
       if (validateStep3()) setCurrentStep(4);
     } else if (currentStep === 4) {
       if (validateStep4()) {
-        // Issue Token
+        // Issue Token in Pending Status
         const issued = issueToken(formData);
-        setGeneratedToken(issued);
+        setGeneratedTokenId(issued.id);
         setCurrentStep(5);
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
@@ -167,12 +171,12 @@ export const StepWizard = () => {
 
               <div className={`wizard-step-node ${currentStep >= 3 ? (currentStep > 3 ? 'completed' : 'active') : ''}`}>
                 <div className="step-bubble">{currentStep > 3 ? '✓' : '3'}</div>
-                <div className="step-label">Verification</div>
+                <div className="step-label">Time Slot</div>
               </div>
 
               <div className={`wizard-step-node ${currentStep >= 4 ? (currentStep > 4 ? 'completed' : 'active') : ''}`}>
                 <div className="step-bubble">{currentStep > 4 ? '✓' : '4'}</div>
-                <div className="step-label">Time Slot</div>
+                <div className="step-label">Document Proof</div>
               </div>
             </div>
           )}
@@ -254,9 +258,36 @@ export const StepWizard = () => {
             </div>
           )}
 
-          {/* STEP 3: Simulated Document Verification */}
+          {/* STEP 3: Morning Time Slot Selection */}
           {currentStep === 3 && (
             <div>
+              <div className="section-header" style={{ marginBottom: '1.5rem', textAlign: 'left' }}>
+                <span className="section-tag">Step 3 of 4</span>
+                <h2 className="section-title">Select Morning Time Slot</h2>
+                <p className="section-desc">
+                  Choose your preferred 30-minute morning slot at <strong>{selectedLoc?.name}</strong>.
+                </p>
+              </div>
+
+              <SlotSelector
+                selectedSlotId={formData.slotId}
+                onSelectSlot={(slotId) => setFormData(prev => ({ ...prev, slotId }))}
+                locationId={formData.locationId}
+              />
+            </div>
+          )}
+
+          {/* STEP 4: Document Proof Upload */}
+          {currentStep === 4 && (
+            <div>
+              <div className="section-header" style={{ marginBottom: '1.5rem', textAlign: 'left' }}>
+                <span className="section-tag">Step 4 of 4</span>
+                <h2 className="section-title">Attach Document Proof</h2>
+                <p className="section-desc">
+                  Attach your proof document. Once submitted, it will stay in <strong>Pending</strong> status until reviewed & accepted by the Officer in the Admin Panel.
+                </p>
+              </div>
+
               <DocVerification
                 formData={formData}
                 isVerified={isDocVerified}
@@ -272,25 +303,26 @@ export const StepWizard = () => {
             </div>
           )}
 
-          {/* STEP 4: Morning Time Slot Selection */}
-          {currentStep === 4 && (
-            <div>
-              <SlotSelector
-                selectedSlotId={formData.slotId}
-                onSelectSlot={(slotId) => setFormData(prev => ({ ...prev, slotId }))}
-                locationId={formData.locationId}
-              />
-            </div>
-          )}
-
-          {/* STEP 5: Generated Token Pass Success */}
+          {/* STEP 5: Generated Token Pass & Status (Pending -> Verified with QR after Admin Accept) */}
           {currentStep === 5 && generatedToken && (
             <div>
               <div className="section-header" style={{ marginBottom: '1.5rem' }}>
-                <span className="section-tag">📝 Application Submitted</span>
-                <h2 className="section-title">Priority Pass Application Submitted!</h2>
+                <span className="section-tag">
+                  {generatedToken.status === 'Verified' ? '🎉 Verification Approved' : generatedToken.status === 'Declined' ? '❌ Application Declined' : '⏳ Status: Pending Review'}
+                </span>
+                <h2 className="section-title">
+                  {generatedToken.status === 'Verified' 
+                    ? 'Official Priority Entry Pass Approved!' 
+                    : generatedToken.status === 'Declined'
+                      ? 'Application Declined by Verification Officer'
+                      : 'Application Submitted — Awaiting Officer Acceptance'}
+                </h2>
                 <p className="section-desc">
-                  Your token <strong>{generatedToken.tokenNumber}</strong> is submitted. Verification will officially complete upon Officer Review & Acceptance in the Admin Command Panel.
+                  {generatedToken.status === 'Verified'
+                    ? 'Your pass is verified and QR code is ready. Show this at the priority lane entrance.'
+                    : generatedToken.status === 'Declined'
+                      ? 'The verification officer declined this application based on the submitted proof.'
+                      : 'Your token is currently PENDING. Your active QR Code will automatically appear here once accepted in the Admin Command Panel.'}
                 </p>
               </div>
 
@@ -314,7 +346,7 @@ export const StepWizard = () => {
                       fileName: 'Aadhaar_Document_Proof.pdf'
                     });
                     setIsDocVerified(false);
-                    setGeneratedToken(null);
+                    setGeneratedTokenId(null);
                   }}
                 >
                   <span>Submit Another Priority Token</span>
@@ -354,7 +386,7 @@ export const StepWizard = () => {
                 onClick={handleNext}
                 id="wizard-next-btn"
               >
-                <span>{currentStep === 4 ? 'Confirm & Generate Digi Token' : 'Proceed to Next Step'}</span>
+                <span>{currentStep === 4 ? 'Submit Priority Pass Application' : 'Proceed to Next Step'}</span>
                 <ArrowRight size={18} />
               </button>
             </div>
