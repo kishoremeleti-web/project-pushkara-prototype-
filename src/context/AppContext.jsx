@@ -62,7 +62,41 @@ export const AppProvider = ({ children }) => {
     }
   });
 
-  // Sync to localStorage and broadcast cross-window/port
+  // Continuous Multi-Tab Sync (storage events + focus + live 1.5s sync interval)
+  useEffect(() => {
+    const syncFromStorage = () => {
+      try {
+        const savedTokens = localStorage.getItem('pushkaralu_tokens');
+        if (savedTokens) {
+          const parsed = JSON.parse(savedTokens);
+          if (Array.isArray(parsed)) {
+            setTokens(parsed);
+          }
+        }
+        const savedLocs = localStorage.getItem('pushkaralu_locations');
+        if (savedLocs) {
+          const parsedLocs = JSON.parse(savedLocs);
+          if (Array.isArray(parsedLocs)) {
+            setLocations(parsedLocs);
+          }
+        }
+      } catch (err) {
+        console.error('Sync error:', err);
+      }
+    };
+
+    window.addEventListener('storage', syncFromStorage);
+    window.addEventListener('focus', syncFromStorage);
+    const interval = setInterval(syncFromStorage, 1500);
+
+    return () => {
+      window.removeEventListener('storage', syncFromStorage);
+      window.removeEventListener('focus', syncFromStorage);
+      clearInterval(interval);
+    };
+  }, []);
+
+  // Sync to localStorage
   useEffect(() => {
     try {
       localStorage.setItem('pushkaralu_tokens', JSON.stringify(tokens));
@@ -78,29 +112,6 @@ export const AppProvider = ({ children }) => {
       console.error(e);
     }
   }, [locations]);
-
-  // Listen for storage events (Real-time sync between localhost:3000 and localhost:3001)
-  useEffect(() => {
-    const handleStorageChange = (e) => {
-      if (e.key === 'pushkaralu_tokens' && e.newValue) {
-        try {
-          setTokens(JSON.parse(e.newValue));
-        } catch (err) {
-          console.error(err);
-        }
-      }
-      if (e.key === 'pushkaralu_locations' && e.newValue) {
-        try {
-          setLocations(JSON.parse(e.newValue));
-        } catch (err) {
-          console.error(err);
-        }
-      }
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
-  }, []);
 
   // Apply accessibility classes to body
   useEffect(() => {
@@ -157,7 +168,7 @@ export const AppProvider = ({ children }) => {
     return `${locPrefix}-${String(nextSeq).padStart(3, '0')}`;
   };
 
-  // Create new priority token (starts in Pending / Verified state with clean record)
+  // Create new priority token (starts in Pending state for Admin Desk review)
   const issueToken = (data) => {
     const loc = locations.find(l => l.id === data.locationId) || LOCATIONS[0];
     const cat = CATEGORIES.find(c => c.id === data.category) || CATEGORIES[0];
@@ -167,11 +178,11 @@ export const AppProvider = ({ children }) => {
     const newToken = {
       id: tokenNumber,
       tokenNumber: tokenNumber,
-      name: data.name,
-      dob: data.dob,
-      age: data.age,
-      mobile: data.mobile,
-      category: data.category,
+      name: data.name || 'Sample Pilgrim',
+      dob: data.dob || '1952-04-12',
+      age: data.age !== null && data.age !== undefined ? data.age : 74,
+      mobile: data.mobile || '9848022334',
+      category: data.category || 'senior',
       categoryName: cat.title,
       assistanceType: data.assistanceType || null,
       locationId: loc.id,
@@ -186,22 +197,34 @@ export const AppProvider = ({ children }) => {
       issuedAt: new Date().toISOString(),
       companionsAllowed: 1,
       docType: data.docType || 'Aadhaar – Demo Verification',
-      fileName: data.fileName || `${(data.docType || 'Document').split(' – ')[0]}_${data.name.replace(/\s+/g, '_')}.pdf`,
+      fileName: data.fileName || `${(data.docType || 'Aadhaar').split(' – ')[0]}_${(data.name || 'Pilgrim').replace(/\s+/g, '_')}_Proof.pdf`,
       docVerified: false,
       verificationCode: `VER-AP-${Math.floor(10000 + Math.random() * 90000)}`,
       verificationNotes: 'Application submitted. Awaiting Document Review by Verification Officer.'
     };
 
-    // Update tokens list
-    setTokens(prev => [newToken, ...prev]);
+    // Update tokens list immediately in state and storage
+    const updatedTokens = [newToken, ...tokens];
+    setTokens(updatedTokens);
+    try {
+      localStorage.setItem('pushkaralu_tokens', JSON.stringify(updatedTokens));
+    } catch (err) {
+      console.error(err);
+    }
 
     // Increment location issued count
-    setLocations(prev => prev.map(l => {
+    const updatedLocs = locations.map(l => {
       if (l.id === loc.id) {
         return { ...l, issued: l.issued + 1 };
       }
       return l;
-    }));
+    });
+    setLocations(updatedLocs);
+    try {
+      localStorage.setItem('pushkaralu_locations', JSON.stringify(updatedLocs));
+    } catch (err) {
+      console.error(err);
+    }
 
     setCurrentPassToken(newToken);
     return newToken;
@@ -209,7 +232,7 @@ export const AppProvider = ({ children }) => {
 
   // Verify and Approve a token by Officer
   const approveToken = (tokenId) => {
-    setTokens(prev => prev.map(t => {
+    const updated = tokens.map(t => {
       if (t.id === tokenId || t.tokenNumber === tokenId) {
         return {
           ...t,
@@ -219,7 +242,13 @@ export const AppProvider = ({ children }) => {
         };
       }
       return t;
-    }));
+    });
+    setTokens(updated);
+    try {
+      localStorage.setItem('pushkaralu_tokens', JSON.stringify(updated));
+    } catch (e) {
+      console.error(e);
+    }
 
     if (currentPassToken && (currentPassToken.id === tokenId || currentPassToken.tokenNumber === tokenId)) {
       setCurrentPassToken(prev => ({ ...prev, status: 'Verified', docVerified: true }));
@@ -228,7 +257,7 @@ export const AppProvider = ({ children }) => {
 
   // Decline a token by Officer
   const declineToken = (tokenId, reason = 'Document verification failed / Ineligible') => {
-    setTokens(prev => prev.map(t => {
+    const updated = tokens.map(t => {
       if (t.id === tokenId || t.tokenNumber === tokenId) {
         return {
           ...t,
@@ -238,7 +267,13 @@ export const AppProvider = ({ children }) => {
         };
       }
       return t;
-    }));
+    });
+    setTokens(updated);
+    try {
+      localStorage.setItem('pushkaralu_tokens', JSON.stringify(updated));
+    } catch (e) {
+      console.error(e);
+    }
 
     if (currentPassToken && (currentPassToken.id === tokenId || currentPassToken.tokenNumber === tokenId)) {
       setCurrentPassToken(prev => ({ ...prev, status: 'Declined', docVerified: false }));
@@ -247,12 +282,18 @@ export const AppProvider = ({ children }) => {
 
   // Update token status (Gate Check-in, Cancel, etc.)
   const updateTokenStatus = (tokenId, newStatus) => {
-    setTokens(prev => prev.map(t => {
+    const updated = tokens.map(t => {
       if (t.id === tokenId || t.tokenNumber === tokenId) {
         return { ...t, status: newStatus };
       }
       return t;
-    }));
+    });
+    setTokens(updated);
+    try {
+      localStorage.setItem('pushkaralu_tokens', JSON.stringify(updated));
+    } catch (e) {
+      console.error(e);
+    }
 
     if (currentPassToken && (currentPassToken.id === tokenId || currentPassToken.tokenNumber === tokenId)) {
       setCurrentPassToken(prev => ({ ...prev, status: newStatus }));

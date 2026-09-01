@@ -13,12 +13,15 @@ import {
   Calendar, 
   FileCheck, 
   ExternalLink,
-  RotateCcw
+  RotateCcw,
+  RefreshCw,
+  PlusCircle,
+  Sparkles
 } from 'lucide-react';
 import { DigiTokenCard } from '../token/DigiTokenCard';
 
 export const DocumentApprovals = () => {
-  const { tokens, locations, approveToken, declineToken } = useApp();
+  const { tokens, locations, approveToken, declineToken, issueToken } = useApp();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('All'); // 'All' | 'Pending' | 'Verified' | 'Declined'
   const [categoryFilter, setCategoryFilter] = useState('All');
@@ -63,6 +66,34 @@ export const DocumentApprovals = () => {
       if (inspectingToken && inspectingToken.id === token.id) {
         setInspectingToken(null);
       }
+    }
+  };
+
+  const handleCreateSampleTest = (cat = 'senior') => {
+    if (cat === 'senior') {
+      issueToken({
+        name: 'Suryanarayana Murthy',
+        dob: '1952-04-12',
+        age: 74,
+        mobile: '9848022334',
+        category: 'senior',
+        locationId: 'ANT',
+        slotId: 'slot-05',
+        docType: 'Aadhaar – Demo Verification',
+        fileName: 'Aadhaar_Suryanarayana_1952.pdf'
+      });
+    } else if (cat === 'child') {
+      issueToken({
+        name: 'Master Reyansh Reddy',
+        dob: '2023-06-10',
+        age: 3,
+        mobile: '9177233445',
+        category: 'child',
+        locationId: 'RAZ',
+        slotId: 'slot-04',
+        docType: 'Birth Certificate – Demo Verification',
+        fileName: 'Birth_Certificate_Reyansh.pdf'
+      });
     }
   };
 
@@ -150,10 +181,10 @@ export const DocumentApprovals = () => {
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
             >
-              <option value="All">All Verification Statuses</option>
-              <option value="Pending">🟡 Pending Review</option>
-              <option value="Verified">🟢 Verified & Approved</option>
-              <option value="Declined">🔴 Declined</option>
+              <option value="All">All Statuses ({tokens.length})</option>
+              <option value="Pending">🟡 Pending Review ({pendingCount})</option>
+              <option value="Verified">🟢 Verified ({verifiedCount})</option>
+              <option value="Declined">🔴 Declined ({declinedCount})</option>
             </select>
 
             {/* Category Filter */}
@@ -188,9 +219,36 @@ export const DocumentApprovals = () => {
             <tbody>
               {filteredTokens.length === 0 ? (
                 <tr>
-                  <td colSpan={7} style={{ textAlign: 'center', padding: '3rem', color: '#64748B' }}>
-                    <AlertCircle size={28} style={{ margin: '0 auto 0.5rem', color: '#94A3B8' }} />
-                    <p style={{ fontWeight: '700' }}>No verification records found matching your filters.</p>
+                  <td colSpan={7} style={{ textAlign: 'center', padding: '3.5rem 1.5rem', color: '#64748B' }}>
+                    <div style={{ width: '50px', height: '50px', borderRadius: '50%', background: 'var(--gov-green-50)', color: 'var(--gov-green-800)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 0.75rem' }}>
+                      <FileText size={24} />
+                    </div>
+                    <h3 style={{ fontSize: '1.15rem', fontWeight: '800', color: 'var(--gov-green-950)', marginBottom: '0.25rem' }}>
+                      Verification Queue is Empty
+                    </h3>
+                    <p style={{ fontSize: '0.85rem', color: '#64748B', maxWidth: '420px', margin: '0 auto 1.25rem' }}>
+                      When a pilgrim submits a priority registration on the public portal, their uploaded document proof will appear here live for officer review.
+                    </p>
+                    <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+                      <button
+                        type="button"
+                        className="btn btn-primary"
+                        style={{ fontSize: '0.85rem', padding: '0.5rem 1rem' }}
+                        onClick={() => handleCreateSampleTest('senior')}
+                      >
+                        <Sparkles size={16} />
+                        <span>Create Sample Senior Application (Age 74)</span>
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-secondary"
+                        style={{ fontSize: '0.85rem', padding: '0.5rem 1rem' }}
+                        onClick={() => handleCreateSampleTest('child')}
+                      >
+                        <Sparkles size={16} />
+                        <span>Create Sample Child Application (Age 3)</span>
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ) : (
@@ -267,7 +325,7 @@ export const DocumentApprovals = () => {
                       }`}>
                         {token.status === 'Verified' ? '🟢 Verified' :
                          token.status === 'Used' ? '🔵 Checked-in' :
-                         token.status === 'Pending' ? '🟡 Pending' : '🔴 Declined'}
+                         token.status === 'Pending' ? '🟡 Pending Review' : '🔴 Declined'}
                       </span>
                     </td>
 
