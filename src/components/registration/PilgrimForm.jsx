@@ -120,24 +120,67 @@ export const PilgrimForm = ({
           </label>
           <div 
             style={{ 
-              padding: '0.85rem 1rem', 
+              padding: '0.75rem 0.95rem', 
               borderRadius: 'var(--radius-md)', 
-              backgroundColor: formData.age !== null ? 'var(--gov-green-50)' : '#F1F5F9',
-              border: '1.5px solid var(--gov-green-200)',
-              fontWeight: '700',
-              color: formData.age !== null ? 'var(--gov-green-900)' : '#64748B'
+              backgroundColor: formData.age !== null ? (
+                (formData.category === 'child' && formData.age < 5) || 
+                (formData.category === 'senior' && formData.age >= 70) || 
+                formData.category === 'special'
+                  ? 'var(--gov-green-50)' : 'var(--red-50)'
+              ) : 'var(--slate-100)',
+              border: '1px solid',
+              borderColor: formData.age !== null ? (
+                (formData.category === 'child' && formData.age < 5) || 
+                (formData.category === 'senior' && formData.age >= 70) || 
+                formData.category === 'special'
+                  ? 'var(--gov-green-300)' : 'var(--red-200)'
+              ) : 'var(--slate-200)',
+              fontWeight: '600',
+              fontSize: '0.85rem',
+              color: formData.age !== null ? (
+                (formData.category === 'child' && formData.age < 5) || 
+                (formData.category === 'senior' && formData.age >= 70) || 
+                formData.category === 'special'
+                  ? 'var(--gov-green-950)' : 'var(--red-700)'
+              ) : 'var(--slate-500)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.45rem'
             }}
           >
             {formData.age !== null ? (
               formData.category === 'child' ? (
-                formData.age < 5 ? `✅ Valid Child Age (${formData.age} yrs < 5)` : `❌ Ineligible for Child (${formData.age} yrs >= 5)`
+                formData.age < 5 ? (
+                  <>
+                    <CheckCircle2 size={16} style={{ color: 'var(--gov-green-700)', flexShrink: 0 }} />
+                    <span>Eligible for Child Priority Pass ({formData.age} Years &lt; 5)</span>
+                  </>
+                ) : (
+                  <>
+                    <AlertCircle size={16} style={{ color: 'var(--red-600)', flexShrink: 0 }} />
+                    <span>Ineligible: Child must be strictly under 5 years ({formData.age} Yrs)</span>
+                  </>
+                )
               ) : formData.category === 'senior' ? (
-                formData.age >= 70 ? `✅ Valid Senior Age (${formData.age} yrs >= 70)` : `❌ Ineligible for Senior (${formData.age} yrs < 70)`
+                formData.age >= 70 ? (
+                  <>
+                    <CheckCircle2 size={16} style={{ color: 'var(--gov-green-700)', flexShrink: 0 }} />
+                    <span>Eligible for Senior Citizen 70+ Priority Pass ({formData.age} Years)</span>
+                  </>
+                ) : (
+                  <>
+                    <AlertCircle size={16} style={{ color: 'var(--red-600)', flexShrink: 0 }} />
+                    <span>Ineligible: Senior citizen must be 70 years or older ({formData.age} Yrs)</span>
+                  </>
+                )
               ) : (
-                `Age: ${formData.age} yrs (Special Assistance Track)`
+                <>
+                  <CheckCircle2 size={16} style={{ color: 'var(--gov-green-700)', flexShrink: 0 }} />
+                  <span>Eligible: Special Assistance Track (Age: {formData.age} Years)</span>
+                </>
               )
             ) : (
-              'Select Date of Birth to verify age'
+              <span>Select Date of Birth above to calculate age eligibility</span>
             )}
           </div>
           <p className="form-hint">Reference date: 15 August 2026 (Godavari Pushkaralu).</p>

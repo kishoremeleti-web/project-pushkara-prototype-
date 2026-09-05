@@ -173,13 +173,13 @@ export const TokenTracker = () => {
                       activeToken.status === 'Used' ? 'status-used' :
                       activeToken.status === 'Pending' ? 'status-pending' : 'status-cancelled'
                     }`}>
-                      {activeToken.status === 'Verified' ? '🟢 Verified & Active' :
-                       activeToken.status === 'Used' ? '🔵 Entry Completed' :
-                       activeToken.status === 'Pending' ? '🟡 Pending Verification' : '🔴 Cancelled'}
+                      {activeToken.status === 'Verified' ? 'Verified & Active' :
+                       activeToken.status === 'Used' ? 'Entry Completed' :
+                       activeToken.status === 'Pending' ? 'Pending Verification' : 'Cancelled'}
                     </span>
                   </div>
                   <p style={{ color: 'var(--slate-700)', fontSize: '0.9rem', fontWeight: '600' }}>
-                    🎫 Digital Pass Issued for <strong>{activeToken.name}</strong> ({activeToken.categoryName})
+                    Digital Pass Issued for <strong>{activeToken.name}</strong> ({activeToken.categoryName})
                   </p>
                 </div>
 
@@ -198,7 +198,7 @@ export const TokenTracker = () => {
                     <MapPin size={20} />
                   </div>
                   <div>
-                    <div style={{ fontSize: '0.75rem', color: 'var(--slate-500)', fontWeight: '700' }}>📍 LOCATION</div>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--slate-500)', fontWeight: '700' }}>LOCATION</div>
                     <div style={{ fontWeight: '800', fontSize: '0.9rem', color: 'var(--gov-green-950)' }}>{activeToken.locationName}</div>
                   </div>
                 </div>
@@ -208,7 +208,7 @@ export const TokenTracker = () => {
                     <Clock size={20} />
                   </div>
                   <div>
-                    <div style={{ fontSize: '0.75rem', color: 'var(--slate-500)', fontWeight: '700' }}>⏰ TIME SLOT</div>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--slate-500)', fontWeight: '700' }}>TIME SLOT</div>
                     <div style={{ fontWeight: '800', fontSize: '0.9rem', color: 'var(--gov-green-950)' }}>{activeToken.timeSlot}</div>
                   </div>
                 </div>
@@ -218,7 +218,7 @@ export const TokenTracker = () => {
                     <DoorOpen size={20} />
                   </div>
                   <div>
-                    <div style={{ fontSize: '0.75rem', color: 'var(--slate-500)', fontWeight: '700' }}>🚪 ENTRY GATE</div>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--slate-500)', fontWeight: '700' }}>ENTRY GATE</div>
                     <div style={{ fontWeight: '800', fontSize: '0.9rem', color: 'var(--gov-green-950)' }}>{activeToken.entryGate}</div>
                   </div>
                 </div>

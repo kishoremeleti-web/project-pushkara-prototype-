@@ -270,9 +270,9 @@ export const DocumentApprovals = () => {
               onChange={(e) => setStatusFilter(e.target.value)}
             >
               <option value="All">All Statuses ({tokens.length})</option>
-              <option value="Pending">🟡 Pending Review ({pendingCount})</option>
-              <option value="Verified">🟢 Verified ({verifiedCount})</option>
-              <option value="Declined">🔴 Declined ({declinedCount})</option>
+              <option value="Pending">Pending Review ({pendingCount})</option>
+              <option value="Verified">Verified ({verifiedCount})</option>
+              <option value="Declined">Declined ({declinedCount})</option>
             </select>
 
             {/* Category Filter */}
@@ -283,9 +283,9 @@ export const DocumentApprovals = () => {
               onChange={(e) => setCategoryFilter(e.target.value)}
             >
               <option value="All">All Categories</option>
-              <option value="child">👶 Child Below 5</option>
-              <option value="senior">👴 Senior Citizen 70+</option>
-              <option value="special">♿ Special Assistance</option>
+              <option value="child">Child Below 5</option>
+              <option value="senior">Senior Citizen 70+</option>
+              <option value="special">Special Assistance</option>
             </select>
           </div>
         </div>
@@ -371,14 +371,14 @@ export const DocumentApprovals = () => {
                           {token.name}
                         </div>
                         <div style={{ fontSize: '0.75rem', color: '#64748B' }}>
-                          📱 {token.mobile} • DOB: {token.dob}
+                          Ph: {token.mobile} • DOB: {token.dob}
                         </div>
                       </td>
 
                       {/* Category & Age */}
                       <td>
                         <span style={{ fontWeight: '700', fontSize: '0.85rem', color: 'var(--gov-green-950)' }}>
-                          {token.category === 'child' ? '👶 Child <5' : token.category === 'senior' ? '👴 Senior 70+' : '♿ Special'}
+                          {token.category === 'child' ? 'Child (<5 Yrs)' : token.category === 'senior' ? 'Senior (70+ Yrs)' : 'Special Assistance'}
                         </span>
                         <div style={{ fontSize: '0.75rem', fontWeight: '800', color: token.age >= 70 ? '#B45309' : token.age < 5 ? '#2563EB' : 'var(--gov-green-800)' }}>
                           Age: {token.age} Yrs
@@ -432,9 +432,9 @@ export const DocumentApprovals = () => {
                           token.status === 'Used' ? 'status-used' :
                           token.status === 'Pending' ? 'status-pending' : 'status-cancelled'
                         }`}>
-                          {token.status === 'Verified' ? '🟢 Verified' :
-                           token.status === 'Used' ? '🔵 Checked-in' :
-                           token.status === 'Pending' ? '🟡 Pending Review' : '🔴 Declined'}
+                          {token.status === 'Verified' ? 'Verified' :
+                           token.status === 'Used' ? 'Checked-in' :
+                           token.status === 'Pending' ? 'Pending Review' : 'Declined'}
                         </span>
                       </td>
 
@@ -529,7 +529,7 @@ export const DocumentApprovals = () => {
                     inspectingToken.status === 'Used' ? 'status-used' :
                     inspectingToken.status === 'Pending' ? 'status-pending' : 'status-cancelled'
                   }`}>
-                    {inspectingToken.status === 'Pending' ? '🟡 Pending Review' : inspectingToken.status}
+                    {inspectingToken.status === 'Pending' ? 'Pending Review' : inspectingToken.status}
                   </span>
                 </div>
                 <h3 style={{ fontSize: '1.25rem', fontWeight: '800', color: 'var(--gov-green-950)' }}>
@@ -634,18 +634,18 @@ export const DocumentApprovals = () => {
                 <strong>Eligibility Audit: </strong>
                 {inspectingToken.category === 'child' ? (
                   inspectingToken.age < 5 ? (
-                    <span style={{ color: 'var(--gov-green-900)', fontWeight: '700' }}>✅ Age {inspectingToken.age} is strictly under 5 years. Eligible for Child Priority Pass.</span>
+                    <span style={{ color: 'var(--gov-green-900)', fontWeight: '700' }}>Eligibility Valid: Age {inspectingToken.age} is under 5 years. Child Priority Pass approved for issuance.</span>
                   ) : (
-                    <span style={{ color: '#DC2626', fontWeight: '700' }}>❌ Age {inspectingToken.age} is NOT under 5 years. Ineligible.</span>
+                    <span style={{ color: '#DC2626', fontWeight: '700' }}>Ineligible: Age {inspectingToken.age} is NOT under 5 years.</span>
                   )
                 ) : inspectingToken.category === 'senior' ? (
                   inspectingToken.age >= 70 ? (
-                    <span style={{ color: 'var(--gov-green-900)', fontWeight: '700' }}>✅ Age {inspectingToken.age} meets Senior Citizen 70+ requirement. Eligible.</span>
+                    <span style={{ color: 'var(--gov-green-900)', fontWeight: '700' }}>Eligibility Valid: Age {inspectingToken.age} meets Senior Citizen (70+) requirement.</span>
                   ) : (
-                    <span style={{ color: '#DC2626', fontWeight: '700' }}>❌ Age {inspectingToken.age} is below 70 years. Ineligible.</span>
+                    <span style={{ color: '#DC2626', fontWeight: '700' }}>Ineligible: Age {inspectingToken.age} is below 70 years threshold.</span>
                   )
                 ) : (
-                  <span style={{ color: 'var(--gov-green-900)', fontWeight: '700' }}>✅ Special Assistance requested ({inspectingToken.assistanceType || 'Mobility Assistance'}).</span>
+                  <span style={{ color: 'var(--gov-green-900)', fontWeight: '700' }}>Special Assistance request logged ({inspectingToken.assistanceType || 'Mobility Assistance'}).</span>
                 )}
               </div>
 

@@ -95,9 +95,9 @@ export const TokenTable = () => {
               id="filter-category-select"
             >
               <option value="All">All Categories</option>
-              <option value="child">👶 Child Below 5</option>
-              <option value="senior">👴 Senior Citizen 70+</option>
-              <option value="special">♿ Special Assistance</option>
+              <option value="child">Child Below 5</option>
+              <option value="senior">Senior Citizen 70+</option>
+              <option value="special">Special Assistance</option>
             </select>
 
             {/* Status Filter */}
@@ -168,7 +168,7 @@ export const TokenTable = () => {
                         {token.name}
                       </div>
                       <div style={{ fontSize: '0.75rem', color: '#64748B' }}>
-                        📱 {token.mobile}
+                        Ph: {token.mobile}
                       </div>
                     </td>
 
@@ -182,7 +182,7 @@ export const TokenTable = () => {
                     {/* Category */}
                     <td>
                       <span style={{ fontSize: '0.825rem', fontWeight: '700', color: 'var(--navy-900)' }}>
-                        {token.category === 'child' ? '👶 Child <5' : token.category === 'senior' ? '👴 Senior 70+' : '♿ Special'}
+                        {token.category === 'child' ? 'Child (<5 Yrs)' : token.category === 'senior' ? 'Senior (70+ Yrs)' : 'Special Assistance'}
                       </span>
                       {token.assistanceType && (
                         <div style={{ fontSize: '0.7rem', color: '#059669', fontWeight: '600' }}>
@@ -211,9 +211,9 @@ export const TokenTable = () => {
                         token.status === 'Used' ? 'status-used' :
                         token.status === 'Pending' ? 'status-pending' : 'status-cancelled'
                       }`}>
-                        {token.status === 'Verified' ? '🟢 Verified' :
-                         token.status === 'Used' ? '🔵 Checked-in' :
-                         token.status === 'Pending' ? '🟡 Pending' : '🔴 Cancelled'}
+                        {token.status === 'Verified' ? 'Verified' :
+                         token.status === 'Used' ? 'Checked-in' :
+                         token.status === 'Pending' ? 'Pending' : 'Cancelled'}
                       </span>
                     </td>
 

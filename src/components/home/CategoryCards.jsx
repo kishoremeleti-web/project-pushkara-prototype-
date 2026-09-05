@@ -4,12 +4,10 @@ import {
   Baby, 
   HeartHandshake, 
   Accessibility, 
-  CheckCircle, 
+  CheckCircle2, 
   Users, 
-  ShieldCheck, 
   ArrowRight,
-  Clock,
-  Sparkles
+  ShieldCheck
 } from 'lucide-react';
 
 export const CategoryCards = () => {
@@ -19,48 +17,48 @@ export const CategoryCards = () => {
     <section className="section section-bg-white" id="priority-categories">
       <div className="container">
         <div className="section-header">
-          <span className="section-tag">Official Priority Assistance</span>
-          <h2 className="section-title">Select Your Priority Category</h2>
+          <span className="section-tag">Sanctioned Categories</span>
+          <h2 className="section-title">Priority Admission Tracks</h2>
           <p className="section-desc">
-            Government priority passes ensure fast-track, dignified, and comfortable entry with dedicated special queues at all 45 Pushkaralu Ghats.
+            Government of Andhra Pradesh priority passes ensure dignified, shaded, and barrier-free access across all 45 Pushkaralu Ghats.
           </p>
         </div>
 
-        {/* 3 Large Category Cards */}
+        {/* 3 Institutional Category Cards */}
         <div className="category-cards-grid">
           {/* Card 1: Child Below 5 */}
           <div className="priority-card card-child">
             <div className="priority-card-header">
               <div className="card-icon-bubble">
-                👶
+                <Baby size={24} />
               </div>
               <span className="priority-badge">Age &lt; 5 Years</span>
             </div>
 
-            <h3 className="card-title">Child Below 5</h3>
+            <h3 className="card-title">Child Below 5 Years</h3>
             <p className="card-desc">
-              For children under 5 years of age. Fast-track entry to protect toddlers from crowd congestion and sun exposure.
+              Fast-track lane priority to safeguard infants and young children from crowd surges and direct afternoon sun exposure.
             </p>
 
             <ul className="card-features">
               <li className="card-feature-item">
-                <CheckCircle size={17} />
-                <span><strong>Age verification:</strong> Strictly below 5 years (0-4 yrs).</span>
+                <CheckCircle2 size={16} />
+                <span><strong>Age Rule:</strong> Strictly below 5 years on Pushkara date.</span>
               </li>
               <li className="card-feature-item">
-                <CheckCircle size={17} />
-                <span><strong>Dedicated lane:</strong> Direct entry through Family & Child gate.</span>
+                <CheckCircle2 size={16} />
+                <span><strong>Lane Access:</strong> Dedicated Family & Toddler Priority Corridor.</span>
               </li>
               <li className="card-feature-item">
-                <CheckCircle size={17} />
-                <span><strong>Document:</strong> Birth Certificate / Aadhaar (Demo Mock).</span>
+                <CheckCircle2 size={16} />
+                <span><strong>Document:</strong> Birth Certificate / Aadhaar Child Card.</span>
               </li>
             </ul>
 
             <div className="companion-highlight-box">
-              <Users size={18} style={{ color: 'var(--gov-green-850)', flexShrink: 0 }} />
+              <Users size={16} style={{ color: 'var(--gov-green-900)', flexShrink: 0 }} />
               <div>
-                <strong>Companion Allowed: 1</strong> (Guardian enters on same token)
+                <strong>Companion Policy:</strong> 1 Parent / Guardian admitted on same pass.
               </div>
             </div>
 
@@ -70,8 +68,8 @@ export const CategoryCards = () => {
               onClick={() => navigateToRegister('child')}
               id="select-child-category-btn"
             >
-              <span>Get Child Token</span>
-              <ArrowRight size={18} />
+              <span>Register Child Pass</span>
+              <ArrowRight size={16} />
             </button>
           </div>
 
@@ -79,35 +77,35 @@ export const CategoryCards = () => {
           <div className="priority-card card-senior">
             <div className="priority-card-header">
               <div className="card-icon-bubble">
-                👴
+                <HeartHandshake size={24} />
               </div>
               <span className="priority-badge">Age 70+ Years</span>
             </div>
 
             <h3 className="card-title">Senior Citizen 70+</h3>
             <p className="card-desc">
-              For elderly pilgrims aged 70 years and above. Priority seating, shaded rest areas, and gentle slope ramp access.
+              Expedited, shaded corridor with priority seating, hydration points, and gentle-slope ramp access to the holy bathing ghats.
             </p>
 
             <ul className="card-features">
               <li className="card-feature-item">
-                <CheckCircle size={17} />
-                <span><strong>Age verification:</strong> Strictly 70 years or above.</span>
+                <CheckCircle2 size={16} />
+                <span><strong>Age Rule:</strong> Strictly 70 years of age or above.</span>
               </li>
               <li className="card-feature-item">
-                <CheckCircle size={17} />
-                <span><strong>Dedicated lane:</strong> Shaded elderly priority walkway.</span>
+                <CheckCircle2 size={16} />
+                <span><strong>Lane Access:</strong> Shaded elderly priority lane with volunteer escorts.</span>
               </li>
               <li className="card-feature-item">
-                <CheckCircle size={17} />
-                <span><strong>Document:</strong> Aadhaar / Senior ID / Voter Card (Demo Mock).</span>
+                <CheckCircle2 size={16} />
+                <span><strong>Document:</strong> Aadhaar / Senior Citizen ID / Voter ID.</span>
               </li>
             </ul>
 
             <div className="companion-highlight-box">
-              <Users size={18} style={{ color: 'var(--gov-green-850)', flexShrink: 0 }} />
+              <Users size={16} style={{ color: 'var(--gov-green-900)', flexShrink: 0 }} />
               <div>
-                <strong>Companion Allowed: 1</strong> (Escort enters on same token)
+                <strong>Companion Policy:</strong> 1 Family Escort admitted on same pass.
               </div>
             </div>
 
@@ -117,8 +115,8 @@ export const CategoryCards = () => {
               onClick={() => navigateToRegister('senior')}
               id="select-senior-category-btn"
             >
-              <span>Get Senior Token</span>
-              <ArrowRight size={18} />
+              <span>Register Senior Pass</span>
+              <ArrowRight size={16} />
             </button>
           </div>
 
@@ -126,35 +124,35 @@ export const CategoryCards = () => {
           <div className="priority-card card-special">
             <div className="priority-card-header">
               <div className="card-icon-bubble">
-                ♿
+                <Accessibility size={24} />
               </div>
               <span className="priority-badge">Special Needs</span>
             </div>
 
             <h3 className="card-title">Special Assistance</h3>
             <p className="card-desc">
-              For differently-abled pilgrims, mobility-impaired, or those requiring medical wheelchairs and special physical assistance.
+              Dedicated accessibility corridor for pilgrims with physical disabilities, mobility challenges, or medical conditions.
             </p>
 
             <ul className="card-features">
               <li className="card-feature-item">
-                <CheckCircle size={17} />
-                <span><strong>Assistance type:</strong> Wheelchair, visual support, mobility aid.</span>
+                <CheckCircle2 size={16} />
+                <span><strong>Support:</strong> Wheelchair transit, visual aid & ramp clearance.</span>
               </li>
               <li className="card-feature-item">
-                <CheckCircle size={17} />
-                <span><strong>Dedicated lane:</strong> Barrier-free ramp & volunteer assistance.</span>
+                <CheckCircle2 size={16} />
+                <span><strong>Lane Access:</strong> Barrier-free universal accessibility gate.</span>
               </li>
               <li className="card-feature-item">
-                <CheckCircle size={17} />
-                <span><strong>Document:</strong> Disability / Medical ID (Demo Mock).</span>
+                <CheckCircle2 size={16} />
+                <span><strong>Document:</strong> Disability Certificate / Medical Assessment.</span>
               </li>
             </ul>
 
             <div className="companion-highlight-box">
-              <Users size={18} style={{ color: 'var(--gov-green-850)', flexShrink: 0 }} />
+              <Users size={16} style={{ color: 'var(--gov-green-900)', flexShrink: 0 }} />
               <div>
-                <strong>Companion Allowed: 1</strong> (Caregiver assists throughout)
+                <strong>Companion Policy:</strong> 1 Caregiver admitted on same pass.
               </div>
             </div>
 
@@ -164,8 +162,8 @@ export const CategoryCards = () => {
               onClick={() => navigateToRegister('special')}
               id="select-special-category-btn"
             >
-              <span>Get Special Token</span>
-              <ArrowRight size={18} />
+              <span>Register Special Pass</span>
+              <ArrowRight size={16} />
             </button>
           </div>
         </div>

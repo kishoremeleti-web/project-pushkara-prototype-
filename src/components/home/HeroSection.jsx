@@ -1,6 +1,6 @@
 import React from 'react';
 import { useApp } from '../../context/AppContext';
-import { Ticket, Search, ShieldCheck, Sparkles, MapPin, Users, ArrowRight } from 'lucide-react';
+import { Ticket, Search, ShieldCheck, MapPin, Users, ArrowRight, Clock, Award } from 'lucide-react';
 
 export const HeroSection = () => {
   const { navigateToRegister, setActiveTab } = useApp();
@@ -9,10 +9,10 @@ export const HeroSection = () => {
     <section className="hero-section">
       <div className="container">
         <div className="hero-content">
-          {/* Pill Badge */}
+          {/* Institutional Badge */}
           <div className="hero-pill-badge">
-            <Sparkles size={16} />
-            <span>Godavari Pushkaralu 2026 • Priority Fast-Track</span>
+            <ShieldCheck size={15} style={{ color: 'var(--gov-green-800)' }} />
+            <span>Government of Andhra Pradesh • Godavari Pushkaralu Priority Desk</span>
           </div>
 
           {/* Main Title */}
@@ -22,7 +22,7 @@ export const HeroSection = () => {
 
           {/* Subtitle */}
           <p className="hero-subtitle">
-            Priority assistance for children, senior citizens and special pilgrims
+            Official digital priority pass reservation system ensuring fast-track, dignified, and comfortable sacred bath access for Children under 5, Senior Citizens 70+, and Special Assistance pilgrims.
           </p>
 
           {/* Action Buttons */}
@@ -32,9 +32,9 @@ export const HeroSection = () => {
               onClick={() => navigateToRegister()}
               id="hero-get-token-btn"
             >
-              <Ticket size={22} />
-              <span>Get Digi Token</span>
-              <ArrowRight size={20} />
+              <Ticket size={18} />
+              <span>Register for Priority Pass</span>
+              <ArrowRight size={18} />
             </button>
 
             <button 
@@ -42,15 +42,29 @@ export const HeroSection = () => {
               onClick={() => { setActiveTab('tracker'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
               id="hero-track-token-btn"
             >
-              <Search size={20} />
-              <span>Track My Token</span>
+              <Search size={18} />
+              <span>Track Existing Token</span>
             </button>
           </div>
 
-          {/* Prototype disclaimer pill */}
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: '#FEF3C7', color: '#92400E', padding: '0.35rem 0.9rem', borderRadius: '999px', fontSize: '0.85rem', fontWeight: '700', border: '1px solid #FDE68A' }}>
-            <ShieldCheck size={16} />
-            <span>Prototype – Demo Only • Instant Simulated Verification</span>
+          {/* Structured Official Stats Strip */}
+          <div className="hero-stat-strip">
+            <div className="hero-stat-item">
+              <MapPin size={15} style={{ color: 'var(--gov-green-800)' }} />
+              <span>45 Sanctioned Pushkara Ghats</span>
+            </div>
+            <div className="hero-stat-item">
+              <Users size={15} style={{ color: 'var(--gov-green-800)' }} />
+              <span>1 Companion / Caregiver Authorized</span>
+            </div>
+            <div className="hero-stat-item">
+              <Clock size={15} style={{ color: 'var(--gov-green-800)' }} />
+              <span>Dedicated 30-Min Morning Slots</span>
+            </div>
+            <div className="hero-stat-item">
+              <Award size={15} style={{ color: 'var(--gov-green-800)' }} />
+              <span>100% Free Public Service</span>
+            </div>
           </div>
         </div>
       </div>

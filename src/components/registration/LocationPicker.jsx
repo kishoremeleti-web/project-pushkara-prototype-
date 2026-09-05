@@ -47,9 +47,9 @@ export const LocationPicker = ({ selectedLocationId, onSelectLocation }) => {
             type="button"
             className="access-btn"
             style={{
-              backgroundColor: selectedZone === zone ? '#0A192F' : '#FFFFFF',
-              color: selectedZone === zone ? '#FFFFFF' : '#334155',
-              borderColor: selectedZone === zone ? '#0A192F' : '#CBD5E1',
+              backgroundColor: selectedZone === zone ? 'var(--gov-green-900)' : '#FFFFFF',
+              color: selectedZone === zone ? '#FFFFFF' : 'var(--slate-700)',
+              borderColor: selectedZone === zone ? 'var(--gov-green-900)' : 'var(--slate-300)',
               whiteSpace: 'nowrap',
               padding: '0.3rem 0.75rem',
               fontSize: '0.8rem'
@@ -90,14 +90,14 @@ export const LocationPicker = ({ selectedLocationId, onSelectLocation }) => {
                     <MapPin size={12} />
                     <span>{loc.ghat}</span>
                   </p>
-                  <p style={{ fontSize: '0.725rem', color: isFull ? '#DC2626' : '#059669', fontWeight: '700', marginTop: '0.25rem' }}>
-                    {isFull ? '🔴 Capacity Full' : `🟢 Available: ${remaining} / ${loc.capacity} tokens`}
+                  <p style={{ fontSize: '0.725rem', color: isFull ? '#DC2626' : 'var(--gov-green-800)', fontWeight: '700', marginTop: '0.25rem' }}>
+                    {isFull ? 'Capacity Full' : `Available: ${remaining} / ${loc.capacity} tokens`}
                   </p>
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   {isSelected && (
-                    <div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: '#EA580C', color: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: 'var(--gov-green-800)', color: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       <Check size={16} />
                     </div>
                   )}

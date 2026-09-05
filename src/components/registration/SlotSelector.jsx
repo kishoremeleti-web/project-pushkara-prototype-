@@ -69,9 +69,9 @@ export const SlotSelector = ({
 
               <div className="slot-availability">
                 {isFull ? (
-                  <span style={{ color: '#DC2626', fontWeight: '800' }}>❌ Slot Full</span>
+                  <span style={{ color: '#DC2626', fontWeight: '700' }}>Capacity Full</span>
                 ) : (
-                  <span>🟢 {remaining} slots left</span>
+                  <span style={{ color: 'var(--gov-green-800)', fontWeight: '700' }}>{remaining} slots available</span>
                 )}
               </div>
 

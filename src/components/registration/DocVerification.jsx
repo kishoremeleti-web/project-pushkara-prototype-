@@ -330,7 +330,7 @@ export const DocVerification = ({
               ) : (
                 <FileCheck size={20} style={{ color: 'var(--slate-400)' }} />
               )}
-              <span>✅ Document Attached & Digitized</span>
+              <span>Document Attached & Digitized</span>
             </div>
 
             {/* Step 2 */}
@@ -346,9 +346,9 @@ export const DocVerification = ({
               )}
               <span>
                 {scanStep >= 2 
-                  ? `✅ Age Validated (${formData.age !== null ? formData.age : 74} Years)` 
+                  ? `Age Validated (${formData.age !== null ? formData.age : 74} Years)` 
                   : verificationError 
-                    ? `❌ Age Check Failed (${formData.age !== null ? formData.age : 'Unknown'} Years)`
+                    ? `Age Check Failed (${formData.age !== null ? formData.age : 'Unknown'} Years)`
                     : 'Age Validation'}
               </span>
             </div>
@@ -366,9 +366,9 @@ export const DocVerification = ({
               )}
               <span>
                 {scanStep >= 3 
-                  ? '✅ Proof Attached (Ready for Officer Acceptance in Admin)' 
+                  ? 'Proof Attached (Transmitted to Admin Desk for Clearance)' 
                   : verificationError 
-                    ? '❌ Ineligible for Priority Category' 
+                    ? 'Ineligible for Priority Category' 
                     : 'Document Clearance'}
               </span>
             </div>

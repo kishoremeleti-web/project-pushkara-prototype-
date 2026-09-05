@@ -139,7 +139,7 @@ export const DigiTokenCard = ({ token, isNew = false }) => {
           <div className="token-number-title">Digital Token ID</div>
           <div className="token-number-value">{token.tokenNumber}</div>
           <div style={{ fontSize: '0.85rem', color: 'var(--gov-green-900)', fontWeight: '800', marginTop: '0.25rem' }}>
-            ● Priority Category: {token.categoryName}
+            Priority Category: {token.categoryName}
           </div>
         </div>
 
@@ -150,8 +150,9 @@ export const DigiTokenCard = ({ token, isNew = false }) => {
               <div className="qr-code-frame">
                 <canvas ref={canvasRef} style={{ display: 'block' }} />
               </div>
-              <p className="qr-instruction-text" style={{ color: '#047857', fontWeight: '800' }}>
-                🟢 Verified Pass • Scan at Special Priority Gate with 1 Companion
+              <p className="qr-instruction-text" style={{ color: '#047857', fontWeight: '800', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}>
+                <CheckCircle2 size={16} />
+                <span>Verified Official Pass • Scan at Special Priority Gate with 1 Companion</span>
               </p>
             </>
           ) : isPending ? (
@@ -223,7 +224,7 @@ export const DigiTokenCard = ({ token, isNew = false }) => {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem', fontSize: '0.75rem' }}>
             <div>
               <span>Verification Status: </span>
-              <strong>{isVerified ? '✅ Accepted & Verified by Officer' : isPending ? '⏳ Awaiting Officer Review' : '❌ Declined'}</strong>
+              <strong>{isVerified ? 'Official Clearance Approved by Officer' : isPending ? 'Pending Officer Review' : 'Declined'}</strong>
             </div>
             <div>
               <span>Document: </span>
@@ -231,7 +232,7 @@ export const DigiTokenCard = ({ token, isNew = false }) => {
             </div>
           </div>
           <div style={{ textAlign: 'center', marginTop: '0.5rem', fontSize: '0.7rem', color: '#64748B' }}>
-            Prototype Demo Only • Pushkaralu Digital Token Verification System
+            Official Pass • Government of Andhra Pradesh Pushkaralu Administration
           </div>
         </div>
       </div>

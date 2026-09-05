@@ -224,9 +224,14 @@ export const StepWizard = () => {
                     id={`cat-select-${cat.id}`}
                   >
                     <div className="category-radio-title">
-                      <span>{cat.id === 'child' ? '👶' : cat.id === 'senior' ? '👴' : '♿'} {cat.title}</span>
+                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
+                        {cat.id === 'child' && <Baby size={18} style={{ color: 'var(--gov-green-850)' }} />}
+                        {cat.id === 'senior' && <HeartHandshake size={18} style={{ color: 'var(--gov-green-850)' }} />}
+                        {cat.id === 'special' && <Accessibility size={18} style={{ color: 'var(--gov-green-850)' }} />}
+                        {cat.title}
+                      </span>
                       {formData.category === cat.id && (
-                        <span style={{ width: '18px', height: '18px', borderRadius: '50%', backgroundColor: 'var(--gov-green-800)', color: '#fff', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px' }}>✓</span>
+                        <CheckCircle2 size={18} style={{ color: 'var(--gov-green-800)' }} />
                       )}
                     </div>
                     <div style={{ fontSize: '0.8rem', color: 'var(--slate-600)' }}>
@@ -316,41 +321,41 @@ export const StepWizard = () => {
             <div>
               <div className="section-header" style={{ marginBottom: '1.5rem' }}>
                 <span className="section-tag">
-                  {generatedToken.status === 'Verified' ? '🎉 Verification Approved' : generatedToken.status === 'Declined' ? '❌ Application Declined' : '⏳ Status: Pending Officer Review'}
+                  {generatedToken.status === 'Verified' ? 'Verification Approved' : generatedToken.status === 'Declined' ? 'Application Declined' : 'Status: Pending Officer Review'}
                 </span>
                 <h2 className="section-title">
                   {generatedToken.status === 'Verified' 
-                    ? 'Official Priority Entry Pass Approved!' 
+                    ? 'Official Priority Entry Pass Approved' 
                     : generatedToken.status === 'Declined'
                       ? 'Application Declined by Verification Officer'
                       : 'Application Submitted — Awaiting Officer Acceptance'}
                 </h2>
                 <p className="section-desc">
                   {generatedToken.status === 'Verified'
-                    ? 'Your pass is verified and QR code is ready. Show this at the priority lane entrance.'
+                    ? 'Your pass is verified and QR code is ready. Present this pass at the priority lane entrance.'
                     : generatedToken.status === 'Declined'
                       ? 'The verification officer declined this application based on the submitted proof.'
-                      : 'Your application has been received and is now waiting in the Admin Command Desk for Officer Acceptance. As soon as the officer approves, your QR code will activate here.'}
+                      : 'Your application has been received and is waiting in the Admin Command Desk for Officer Acceptance. As soon as the officer approves, your QR code will activate here.'}
                 </p>
               </div>
 
               {/* Demo Helper Actions Bar for Testing */}
               {generatedToken.status === 'Pending' && (
-                <div style={{ maxWidth: '600px', margin: '0 auto 1.5rem', backgroundColor: '#FEF3C7', border: '1.5px solid #FDE68A', borderRadius: 'var(--radius-lg)', padding: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.75rem', flexWrap: 'wrap' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#92400E', fontSize: '0.85rem', fontWeight: '700' }}>
-                    <Hourglass size={18} />
-                    <span>Officer Action Needed: Token <strong>{generatedToken.tokenNumber}</strong> is pending review</span>
+                <div style={{ maxWidth: '600px', margin: '0 auto 1.5rem', backgroundColor: '#FEF9C3', border: '1px solid #FEF08A', borderRadius: 'var(--radius-lg)', padding: '0.85rem 1.1rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.75rem', flexWrap: 'wrap' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#854D0E', fontSize: '0.825rem', fontWeight: '600' }}>
+                    <Hourglass size={16} />
+                    <span>Officer Action Required: Token <strong>{generatedToken.tokenNumber}</strong> is pending review</span>
                   </div>
-                  <div style={{ display: 'flex', gap: '0.5rem' }}>
+                  <div style={{ display: 'flex', gap: '0.45rem' }}>
                     <button
                       type="button"
                       className="btn btn-primary"
-                      style={{ padding: '0.45rem 0.85rem', fontSize: '0.8rem' }}
+                      style={{ padding: '0.4rem 0.8rem', fontSize: '0.775rem' }}
                       onClick={() => approveToken(generatedToken.id)}
                       id="quick-demo-approve-btn"
                     >
-                      <CheckCircle2 size={14} />
-                      <span>⚡ Quick Officer Approve (Demo)</span>
+                      <CheckCircle2 size={13} />
+                      <span>Quick Officer Approve (Demo)</span>
                     </button>
                     <button
                       type="button"

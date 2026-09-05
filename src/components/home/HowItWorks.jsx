@@ -1,6 +1,6 @@
 import React from 'react';
 import { useApp } from '../../context/AppContext';
-import { MapPin, UserCheck, ShieldCheck, Clock, QrCode, ArrowRight } from 'lucide-react';
+import { MapPin, UserCheck, FileCheck, Clock, QrCode, ArrowRight } from 'lucide-react';
 
 export const HowItWorks = () => {
   const { navigateToRegister } = useApp();
@@ -9,43 +9,43 @@ export const HowItWorks = () => {
     {
       num: 1,
       title: 'Select Ghat Location',
-      desc: 'Choose from 45 official Godavari Pushkara ghat locations with real-time capacity monitoring.',
-      icon: <MapPin size={24} />
+      desc: 'Choose from 45 sanctioned Godavari Pushkara ghat locations with real-time capacity management.',
+      icon: <MapPin size={22} />
     },
     {
       num: 2,
       title: 'Enter Pilgrim Details',
-      desc: 'Enter pilgrim info with date of birth. Age is automatically calculated for verification.',
-      icon: <UserCheck size={24} />
+      desc: 'Provide pilgrim particulars and date of birth for automated statutory age classification.',
+      icon: <UserCheck size={22} />
     },
     {
       num: 3,
-      title: 'Demo ID Verification',
-      desc: 'Simulate document verification with mock Aadhaar or Birth Certificate without sharing real data.',
-      icon: <ShieldCheck size={24} />
+      title: 'Document Proof',
+      desc: 'Attach simulated identity verification proof (Aadhaar, Birth Certificate, or Senior ID).',
+      icon: <FileCheck size={22} />
     },
     {
       num: 4,
-      title: 'Choose Time Slot',
-      desc: 'Pick a convenient 30-minute morning slot (6:00 AM – 12:00 PM) to avoid crowd congestion.',
-      icon: <Clock size={24} />
+      title: 'Select Morning Slot',
+      desc: 'Choose a dedicated 30-minute morning bathing slot (6:00 AM – 12:00 PM) for crowd regulation.',
+      icon: <Clock size={22} />
     },
     {
       num: 5,
-      title: 'Get Digi Token Pass',
-      desc: 'Receive your secure QR Code token pass on your phone with 1-companion priority entry permission.',
-      icon: <QrCode size={24} />
+      title: 'Receive Official Pass',
+      desc: 'Generate your official digital token pass with instant QR code and 1-companion authorization.',
+      icon: <QrCode size={22} />
     }
   ];
 
   return (
-    <section className="section" style={{ backgroundColor: '#F8FAFC' }}>
+    <section className="section" style={{ backgroundColor: '#F8FAF9' }}>
       <div className="container">
         <div className="section-header">
-          <span className="section-tag">Simple 5-Step Process</span>
+          <span className="section-tag">Standard Operating Procedure</span>
           <h2 className="section-title">How Digi Token Priority Works</h2>
           <p className="section-desc">
-            Designed for elderly pilgrims and families to easily secure priority access in under 2 minutes.
+            Streamlined 5-step digital reservation designed for elderly pilgrims, families, and caregivers.
           </p>
         </div>
 
@@ -60,13 +60,13 @@ export const HowItWorks = () => {
           ))}
         </div>
 
-        <div style={{ textAlign: 'center', marginTop: '3rem' }}>
+        <div style={{ textAlign: 'center', marginTop: '2.5rem' }}>
           <button 
             className="btn btn-primary btn-lg"
             onClick={() => navigateToRegister()}
           >
-            <span>Start Digi Token Registration</span>
-            <ArrowRight size={20} />
+            <span>Proceed to Token Registration</span>
+            <ArrowRight size={18} />
           </button>
         </div>
       </div>
