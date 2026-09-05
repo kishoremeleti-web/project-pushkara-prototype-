@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useApp } from '../../context/AppContext';
 import { DigiTokenCard } from './DigiTokenCard';
 import { 
@@ -16,10 +16,22 @@ import {
 
 export const TokenTracker = () => {
   const { tokens, currentPassToken, setCurrentPassToken, findToken, navigateToRegister } = useApp();
-  const [searchQuery, setSearchQuery] = useState(currentPassToken?.tokenNumber || '');
+  const [searchQuery, setSearchQuery] = useState(currentPassToken?.tokenNumber || (tokens.length > 0 ? tokens[0].tokenNumber : ''));
   const [activeToken, setActiveToken] = useState(currentPassToken || (tokens.length > 0 ? tokens[0] : null));
   const [hasSearched, setHasSearched] = useState(false);
   const [searchError, setSearchError] = useState(null);
+
+  // Keep active token in sync when currentPassToken or tokens list updates
+  useEffect(() => {
+    if (currentPassToken) {
+      setActiveToken(currentPassToken);
+      setSearchQuery(currentPassToken.tokenNumber);
+      setSearchError(null);
+    } else if (!activeToken && tokens.length > 0) {
+      setActiveToken(tokens[0]);
+      setSearchQuery(tokens[0].tokenNumber);
+    }
+  }, [currentPassToken, tokens]);
 
   const handleSearch = (e) => {
     e?.preventDefault();

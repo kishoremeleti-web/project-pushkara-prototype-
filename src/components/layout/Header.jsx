@@ -155,14 +155,36 @@ export const Header = () => {
               <span>Help & FAQ</span>
             </button>
 
-            {/* If authenticated in Admin session on Port 3001 */}
-            {isAdminLoggedIn && isPortAdmin && (
+            {/* Officer / Admin Portal Nav Button */}
+            {isAdminLoggedIn ? (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                <button 
+                  className={`nav-admin-btn logged-in ${activeTab === 'admin' ? 'active' : ''}`}
+                  onClick={() => handleNavClick('admin')}
+                  id="header-nav-admin-cmd"
+                >
+                  <CheckCircle2 size={16} />
+                  <span>Admin Command</span>
+                </button>
+                <button
+                  className="access-btn"
+                  onClick={handleLogoutAdmin}
+                  style={{ padding: '0.45rem 0.7rem', color: '#FCA5A5', borderColor: 'rgba(239, 68, 68, 0.4)' }}
+                  title="Logout from Admin"
+                  id="header-nav-logout"
+                >
+                  <LogOut size={14} />
+                </button>
+              </div>
+            ) : (
               <button 
-                className="nav-admin-btn logged-in"
+                className="nav-item"
+                style={{ color: 'var(--gov-green-900)', fontWeight: '700' }}
                 onClick={() => handleNavClick('admin')}
+                id="header-nav-officer-portal"
               >
-                <CheckCircle2 size={16} />
-                <span>Admin Command</span>
+                <Lock size={16} />
+                <span>Officer Portal</span>
               </button>
             )}
           </nav>
@@ -215,14 +237,32 @@ export const Header = () => {
               <HelpCircle size={18} />
               <span>Help & Guidelines</span>
             </button>
-            {isAdminLoggedIn && isPortAdmin && (
+            {isAdminLoggedIn ? (
+              <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
+                <button 
+                  className="nav-admin-btn logged-in"
+                  style={{ flex: 1, justifyContent: 'center' }}
+                  onClick={() => handleNavClick('admin')}
+                >
+                  <CheckCircle2 size={16} />
+                  <span>Admin Command</span>
+                </button>
+                <button
+                  className="btn btn-secondary"
+                  style={{ padding: '0.5rem', color: '#DC2626' }}
+                  onClick={handleLogoutAdmin}
+                >
+                  <LogOut size={16} />
+                </button>
+              </div>
+            ) : (
               <button 
-                className="nav-admin-btn logged-in"
-                style={{ width: '100%', justifyContent: 'center' }}
+                className="nav-item"
+                style={{ width: '100%', justifyContent: 'flex-start', color: 'var(--gov-green-900)', fontWeight: '700' }}
                 onClick={() => handleNavClick('admin')}
               >
-                <CheckCircle2 size={16} />
-                <span>Admin Command</span>
+                <Lock size={16} />
+                <span>Officer Portal</span>
               </button>
             )}
           </div>

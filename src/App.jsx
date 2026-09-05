@@ -94,14 +94,28 @@ export function App() {
                   </div>
 
                   <div className="form-group" style={{ marginBottom: '1.5rem' }}>
-                    <label className="form-label" htmlFor="portal-password">
-                      Security Passcode (10 Characters) <span className="req">*</span>
-                    </label>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.4rem' }}>
+                      <label className="form-label" htmlFor="portal-password" style={{ marginBottom: 0 }}>
+                        Security Passcode <span className="req">*</span>
+                      </label>
+                      <button
+                        type="button"
+                        className="demo-doc-btn"
+                        style={{ fontSize: '0.725rem', padding: '0.15rem 0.5rem' }}
+                        onClick={() => {
+                          setPortalUsername('Officer Kishore');
+                          setPortalPasscode('K9#mQ7$vX2');
+                          if (portalError) setPortalError(null);
+                        }}
+                      >
+                        ⚡ Auto-fill Passcode
+                      </button>
+                    </div>
                     <input
                       id="portal-password"
                       type="password"
                       className="form-input"
-                      placeholder="Enter 10-character passcode"
+                      placeholder="Enter security passcode (e.g. K9#mQ7$vX2 or admin)"
                       value={portalPasscode}
                       onChange={(e) => {
                         setPortalPasscode(e.target.value);
@@ -109,6 +123,24 @@ export function App() {
                       }}
                       required
                     />
+                    <div style={{ marginTop: '0.5rem', display: 'flex', gap: '0.35rem', flexWrap: 'wrap', alignItems: 'center' }}>
+                      <span style={{ fontSize: '0.75rem', color: '#64748B' }}>Authorized Demo Passcodes:</span>
+                      {validPasscodes.slice(0, 3).map((pc, idx) => (
+                        <button
+                          key={pc}
+                          type="button"
+                          className="demo-doc-btn"
+                          style={{ fontSize: '0.7rem', padding: '0.15rem 0.45rem' }}
+                          onClick={() => {
+                            setPortalUsername(`Officer ${idx + 1}`);
+                            setPortalPasscode(pc);
+                            if (portalError) setPortalError(null);
+                          }}
+                        >
+                          <code>{pc}</code>
+                        </button>
+                      ))}
+                    </div>
                   </div>
 
                   {portalError && (

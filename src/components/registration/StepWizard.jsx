@@ -11,12 +11,16 @@ import {
   ArrowRight, 
   AlertCircle, 
   Ticket, 
-  Sparkles,
-  MapPin,
-  Calendar,
-  Baby,
-  HeartHandshake,
-  Accessibility
+  Sparkles, 
+  MapPin, 
+  Calendar, 
+  Baby, 
+  HeartHandshake, 
+  Accessibility,
+  CheckCircle2,
+  Hourglass,
+  ShieldCheck,
+  ExternalLink
 } from 'lucide-react';
 
 export const StepWizard = () => {
@@ -28,6 +32,7 @@ export const StepWizard = () => {
     tokens,
     validateEligibility, 
     issueToken,
+    approveToken,
     setActiveTab
   } = useApp();
 
@@ -42,7 +47,10 @@ export const StepWizard = () => {
     assistanceType: 'Wheelchair Assistance',
     slotId: 'slot-05',
     docType: 'Aadhaar – Demo Verification',
-    fileName: 'Aadhaar_Document_Proof.pdf'
+    fileName: 'Aadhaar_Document_Proof.pdf',
+    fileDataUrl: null,
+    fileSize: null,
+    fileType: null
   });
 
   const [errors, setErrors] = useState({});
@@ -118,6 +126,16 @@ export const StepWizard = () => {
     return true;
   };
 
+  const submitApplication = () => {
+    if (validateStep4()) {
+      // Issue Token in Pending Status
+      const issued = issueToken(formData);
+      setGeneratedTokenId(issued.id);
+      setCurrentStep(5);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   // Handle Next
   const handleNext = () => {
     if (currentStep === 1) {
@@ -127,13 +145,7 @@ export const StepWizard = () => {
     } else if (currentStep === 3) {
       if (validateStep3()) setCurrentStep(4);
     } else if (currentStep === 4) {
-      if (validateStep4()) {
-        // Issue Token in Pending Status
-        const issued = issueToken(formData);
-        setGeneratedTokenId(issued.id);
-        setCurrentStep(5);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
+      submitApplication();
     }
   };
 
@@ -280,23 +292,19 @@ export const StepWizard = () => {
           {/* STEP 4: Document Proof Upload */}
           {currentStep === 4 && (
             <div>
-              <div className="section-header" style={{ marginBottom: '1.5rem', textAlign: 'left' }}>
-                <span className="section-tag">Step 4 of 4</span>
-                <h2 className="section-title">Attach Document Proof</h2>
-                <p className="section-desc">
-                  Attach your proof document. Once submitted, it will stay in <strong>Pending</strong> status until reviewed & accepted by the Officer in the Admin Panel.
-                </p>
-              </div>
-
               <DocVerification
                 formData={formData}
                 isVerified={isDocVerified}
                 setIsVerified={setIsDocVerified}
+                onDirectSubmit={submitApplication}
                 onVerificationComplete={(data) => {
                   setFormData(prev => ({ 
                     ...prev, 
                     docType: data.docType,
-                    fileName: data.fileName || `${data.docType?.split(' – ')[0] || 'Demo_Document'}_Uploaded.pdf`
+                    fileName: data.fileName || `${data.docType?.split(' – ')[0] || 'Demo_Document'}_Uploaded.pdf`,
+                    fileDataUrl: data.fileDataUrl || null,
+                    fileSize: data.fileSize || null,
+                    fileType: data.fileType || null
                   }));
                 }}
               />
@@ -308,7 +316,7 @@ export const StepWizard = () => {
             <div>
               <div className="section-header" style={{ marginBottom: '1.5rem' }}>
                 <span className="section-tag">
-                  {generatedToken.status === 'Verified' ? '🎉 Verification Approved' : generatedToken.status === 'Declined' ? '❌ Application Declined' : '⏳ Status: Pending Review'}
+                  {generatedToken.status === 'Verified' ? '🎉 Verification Approved' : generatedToken.status === 'Declined' ? '❌ Application Declined' : '⏳ Status: Pending Officer Review'}
                 </span>
                 <h2 className="section-title">
                   {generatedToken.status === 'Verified' 
@@ -322,9 +330,43 @@ export const StepWizard = () => {
                     ? 'Your pass is verified and QR code is ready. Show this at the priority lane entrance.'
                     : generatedToken.status === 'Declined'
                       ? 'The verification officer declined this application based on the submitted proof.'
-                      : 'Your token is currently PENDING. Your active QR Code will automatically appear here once accepted in the Admin Command Panel.'}
+                      : 'Your application has been received and is now waiting in the Admin Command Desk for Officer Acceptance. As soon as the officer approves, your QR code will activate here.'}
                 </p>
               </div>
+
+              {/* Demo Helper Actions Bar for Testing */}
+              {generatedToken.status === 'Pending' && (
+                <div style={{ maxWidth: '600px', margin: '0 auto 1.5rem', backgroundColor: '#FEF3C7', border: '1.5px solid #FDE68A', borderRadius: 'var(--radius-lg)', padding: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.75rem', flexWrap: 'wrap' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#92400E', fontSize: '0.85rem', fontWeight: '700' }}>
+                    <Hourglass size={18} />
+                    <span>Officer Action Needed: Token <strong>{generatedToken.tokenNumber}</strong> is pending review</span>
+                  </div>
+                  <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      style={{ padding: '0.45rem 0.85rem', fontSize: '0.8rem' }}
+                      onClick={() => approveToken(generatedToken.id)}
+                      id="quick-demo-approve-btn"
+                    >
+                      <CheckCircle2 size={14} />
+                      <span>⚡ Quick Officer Approve (Demo)</span>
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      style={{ padding: '0.45rem 0.85rem', fontSize: '0.8rem' }}
+                      onClick={() => {
+                        setActiveTab('admin');
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
+                    >
+                      <ExternalLink size={14} />
+                      <span>Admin Desk</span>
+                    </button>
+                  </div>
+                </div>
+              )}
 
               <DigiTokenCard token={generatedToken} isNew={true} />
 
@@ -343,7 +385,10 @@ export const StepWizard = () => {
                       assistanceType: 'Wheelchair Assistance',
                       slotId: 'slot-05',
                       docType: 'Aadhaar – Demo Verification',
-                      fileName: 'Aadhaar_Document_Proof.pdf'
+                      fileName: 'Aadhaar_Document_Proof.pdf',
+                      fileDataUrl: null,
+                      fileSize: null,
+                      fileType: null
                     });
                     setIsDocVerified(false);
                     setGeneratedTokenId(null);

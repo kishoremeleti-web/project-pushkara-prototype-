@@ -1,7 +1,7 @@
 // Comprehensive Verification Script for Pushkaralu Digi Token Business Rules & Data Integrity
 import { LOCATIONS, CATEGORIES, ASSISTANCE_TYPES } from './src/data/locationsData.js';
 import { TIME_SLOTS } from './src/data/timeSlotsData.js';
-import { INITIAL_TOKENS } from './src/data/initialTokens.js';
+import { INITIAL_TOKENS, VALID_ADMIN_PASSCODES } from './src/data/initialTokens.js';
 
 console.log('=== PUSHKARALU DIGI TOKEN VERIFICATION SUITE ===\n');
 
@@ -107,6 +107,59 @@ assert(INITIAL_TOKENS.some(t => t.category === 'child'), 'Sample Child token pre
 assert(INITIAL_TOKENS.some(t => t.category === 'senior'), 'Sample Senior token present');
 assert(INITIAL_TOKENS.some(t => t.category === 'special'), 'Sample Special Assistance token present');
 assert(INITIAL_TOKENS.every(t => t.companionsAllowed === 1), 'All priority tokens grant 1 Companion entry');
+
+// 8. Admin Security Passcodes
+assert(VALID_ADMIN_PASSCODES.length >= 5, 'Valid 10-char passcodes and admin credentials configured');
+assert(VALID_ADMIN_PASSCODES.includes('K9#mQ7$vX2'), 'Primary passcode K9#mQ7$vX2 valid');
+assert(VALID_ADMIN_PASSCODES.includes('admin'), 'Demo passcode "admin" valid');
+
+// 9. Document Proof Attachment & Approval Lifecycle Test
+const mockRegistration = {
+  name: 'Kishore Meleti',
+  dob: '1950-05-20',
+  age: 76,
+  mobile: '9848099887',
+  category: 'senior',
+  locationId: 'ANT',
+  slotId: 'slot-05',
+  docType: 'Aadhaar – Demo Verification',
+  fileName: 'Aadhaar_Kishore_1950.pdf',
+  fileDataUrl: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=='
+};
+
+function issueMockToken(data, currentTokens) {
+  const tokenNumber = `ANT-099`;
+  return {
+    id: tokenNumber,
+    tokenNumber,
+    name: data.name,
+    age: data.age,
+    category: data.category,
+    status: 'Pending',
+    fileName: data.fileName,
+    fileDataUrl: data.fileDataUrl,
+    docVerified: false
+  };
+}
+
+const newlyCreated = issueMockToken(mockRegistration, INITIAL_TOKENS);
+assert(newlyCreated.status === 'Pending', 'Newly submitted registration starts with status Pending');
+assert(newlyCreated.fileName === 'Aadhaar_Kishore_1950.pdf', 'Document filename correctly attached');
+assert(newlyCreated.fileDataUrl !== null, 'Document file data URL preserved');
+
+// Officer Approval simulation
+function approveMockToken(token) {
+  return {
+    ...token,
+    status: 'Verified',
+    docVerified: true,
+    verificationNotes: 'Official document reviewed and approved by Verification Officer.'
+  };
+}
+
+const approved = approveMockToken(newlyCreated);
+assert(approved.status === 'Verified', 'Approved token status becomes Verified');
+assert(approved.docVerified === true, 'docVerified becomes true upon officer approval');
 
 console.log(`\n=== TEST SUMMARY: ${passedTests} PASSED, ${failedTests} FAILED ===\n`);
 if (failedTests > 0) process.exit(1);

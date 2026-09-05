@@ -3,6 +3,8 @@ import { useApp } from '../../context/AppContext';
 import { DocumentApprovals } from './DocumentApprovals';
 import { GateScanner } from './GateScanner';
 import { LocationStats } from './LocationStats';
+import { TokenTable } from './TokenTable';
+import { ReportsView } from './ReportsView';
 import { 
   ShieldCheck, 
   FileText, 
@@ -14,12 +16,14 @@ import {
   Clock, 
   XCircle, 
   Sparkles,
-  Users
+  Users,
+  ListOrdered,
+  BarChart3
 } from 'lucide-react';
 
 export const AdminDashboard = () => {
   const { tokens, setIsAdminLoggedIn, setActiveTab, activeAdminRole } = useApp();
-  const [adminPanel, setAdminPanel] = useState('approvals'); // 'approvals' | 'scanner' | 'locations'
+  const [adminPanel, setAdminPanel] = useState('approvals'); // 'approvals' | 'scanner' | 'locations' | 'registry' | 'reports'
 
   // Quick stats
   const pendingCount = tokens.filter(t => t.status === 'Pending').length;
@@ -40,7 +44,7 @@ export const AdminDashboard = () => {
               <span>Government of Andhra Pradesh • Official Command Portal</span>
             </div>
             <h1 style={{ fontSize: '1.85rem', fontWeight: '900', color: 'var(--gov-green-950)' }}>
-              Pushkaralu 3-Panel Admin Command
+              Pushkaralu Command & Management Portal
             </h1>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.2rem' }}>
               <span style={{ fontSize: '0.8rem', background: 'var(--gov-green-100)', color: 'var(--gov-green-900)', padding: '0.2rem 0.5rem', borderRadius: '4px', fontWeight: '800', border: '1px solid var(--gov-green-200)' }}>
@@ -61,20 +65,20 @@ export const AdminDashboard = () => {
           </div>
         </div>
 
-        {/* 3 ADMIN PANELS NAVIGATION TABS */}
-        <div className="admin-tabs-nav" style={{ borderBottom: '3px solid var(--gov-green-200)', marginBottom: '1.75rem' }}>
+        {/* ADMIN PANELS NAVIGATION TABS */}
+        <div className="admin-tabs-nav" style={{ borderBottom: '3px solid var(--gov-green-200)', marginBottom: '1.75rem', overflowX: 'auto', display: 'flex', flexWrap: 'nowrap' }}>
           {/* Panel 1: Document Approvals */}
           <button
             className={`admin-tab-btn ${adminPanel === 'approvals' ? 'active' : ''}`}
             onClick={() => setAdminPanel('approvals')}
             id="panel-tab-approvals"
-            style={{ fontSize: '1.05rem', padding: '0.9rem 1.5rem' }}
+            style={{ fontSize: '1rem', padding: '0.85rem 1.25rem', whiteSpace: 'nowrap' }}
           >
-            <FileText size={20} />
-            <span>1. Document Approvals & Verification Desk</span>
+            <FileText size={18} />
+            <span>1. Document Approvals</span>
             {pendingCount > 0 && (
               <span style={{ background: '#B45309', color: '#FFFFFF', fontSize: '0.75rem', padding: '0.15rem 0.5rem', borderRadius: '999px', fontWeight: '900' }}>
-                {pendingCount} Pending
+                {pendingCount}
               </span>
             )}
           </button>
@@ -84,10 +88,10 @@ export const AdminDashboard = () => {
             className={`admin-tab-btn ${adminPanel === 'scanner' ? 'active' : ''}`}
             onClick={() => setAdminPanel('scanner')}
             id="panel-tab-scanner"
-            style={{ fontSize: '1.05rem', padding: '0.9rem 1.5rem' }}
+            style={{ fontSize: '1rem', padding: '0.85rem 1.25rem', whiteSpace: 'nowrap' }}
           >
-            <Scan size={20} />
-            <span>2. Gate QR Security Scanner</span>
+            <Scan size={18} />
+            <span>2. Gate Scanner</span>
           </button>
 
           {/* Panel 3: 45 Locations Quota */}
@@ -95,10 +99,32 @@ export const AdminDashboard = () => {
             className={`admin-tab-btn ${adminPanel === 'locations' ? 'active' : ''}`}
             onClick={() => setAdminPanel('locations')}
             id="panel-tab-locations"
-            style={{ fontSize: '1.05rem', padding: '0.9rem 1.5rem' }}
+            style={{ fontSize: '1rem', padding: '0.85rem 1.25rem', whiteSpace: 'nowrap' }}
           >
-            <MapPin size={20} />
-            <span>3. 45 Ghat Locations & Live Capacity</span>
+            <MapPin size={18} />
+            <span>3. 45 Ghat Capacities</span>
+          </button>
+
+          {/* Panel 4: Master Token Registry */}
+          <button
+            className={`admin-tab-btn ${adminPanel === 'registry' ? 'active' : ''}`}
+            onClick={() => setAdminPanel('registry')}
+            id="panel-tab-registry"
+            style={{ fontSize: '1rem', padding: '0.85rem 1.25rem', whiteSpace: 'nowrap' }}
+          >
+            <ListOrdered size={18} />
+            <span>4. Master Registry</span>
+          </button>
+
+          {/* Panel 5: Analytics & Reports */}
+          <button
+            className={`admin-tab-btn ${adminPanel === 'reports' ? 'active' : ''}`}
+            onClick={() => setAdminPanel('reports')}
+            id="panel-tab-reports"
+            style={{ fontSize: '1rem', padding: '0.85rem 1.25rem', whiteSpace: 'nowrap' }}
+          >
+            <BarChart3 size={18} />
+            <span>5. Reports & Flow</span>
           </button>
         </div>
 
@@ -107,6 +133,8 @@ export const AdminDashboard = () => {
           {adminPanel === 'approvals' && <DocumentApprovals />}
           {adminPanel === 'scanner' && <GateScanner onSwitchToApprovals={() => setAdminPanel('approvals')} />}
           {adminPanel === 'locations' && <LocationStats />}
+          {adminPanel === 'registry' && <TokenTable />}
+          {adminPanel === 'reports' && <ReportsView />}
         </div>
       </div>
     </div>
