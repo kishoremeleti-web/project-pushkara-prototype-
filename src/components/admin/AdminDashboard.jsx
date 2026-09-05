@@ -18,11 +18,19 @@ import {
   Sparkles,
   Users,
   ListOrdered,
-  BarChart3
+  BarChart3,
+  Cloud
 } from 'lucide-react';
 
 export const AdminDashboard = () => {
-  const { tokens, setIsAdminLoggedIn, setActiveTab, activeAdminRole } = useApp();
+  const { 
+    tokens, 
+    setIsAdminLoggedIn, 
+    setActiveTab, 
+    activeAdminRole,
+    cloudSyncStatus,
+    setShowCloudConfigModal
+  } = useApp();
   const [adminPanel, setAdminPanel] = useState('approvals'); // 'approvals' | 'scanner' | 'locations' | 'registry' | 'reports'
 
   // Quick stats
@@ -54,6 +62,23 @@ export const AdminDashboard = () => {
           </div>
 
           <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+            <button 
+              className="btn btn-secondary"
+              style={{ 
+                fontSize: '0.85rem', 
+                padding: '0.5rem 0.9rem', 
+                borderColor: cloudSyncStatus === 'connected' ? 'var(--gov-green-400)' : '#FCD34D',
+                color: cloudSyncStatus === 'connected' ? 'var(--gov-green-900)' : '#92400E',
+                backgroundColor: cloudSyncStatus === 'connected' ? 'var(--gov-green-50)' : '#FFFBEB'
+              }}
+              onClick={() => setShowCloudConfigModal(true)}
+              title="Real-Time Cloud Synchronization Settings"
+              id="admin-cloud-sync-btn"
+            >
+              <Cloud size={15} />
+              <span>{cloudSyncStatus === 'connected' ? 'Live Cloud Synced' : 'Cloud: Local Mode'}</span>
+            </button>
+
             <button 
               className="btn btn-secondary"
               style={{ fontSize: '0.85rem', padding: '0.5rem 0.9rem', color: '#DC2626', borderColor: '#FCA5A5' }}

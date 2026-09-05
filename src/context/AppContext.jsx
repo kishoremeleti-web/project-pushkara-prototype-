@@ -2,6 +2,17 @@ import React, { createContext, useContext, useState, useEffect, useRef } from 'r
 import { LOCATIONS, CATEGORIES, ASSISTANCE_TYPES } from '../data/locationsData';
 import { TIME_SLOTS } from '../data/timeSlotsData';
 import { INITIAL_TOKENS, VALID_ADMIN_PASSCODES } from '../data/initialTokens';
+import { 
+  initFirebase, 
+  isCloudConfigured, 
+  subscribeToCloudTokens, 
+  saveTokenToCloud, 
+  updateTokenInCloud, 
+  seedCloudTokensIfEmpty, 
+  getActiveFirebaseConfig, 
+  setCustomFirebaseConfig, 
+  clearCustomFirebaseConfig 
+} from '../services/firebase';
 
 const AppContext = createContext();
 
@@ -25,6 +36,10 @@ export const AppProvider = ({ children }) => {
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
   const [activeAdminRole, setActiveAdminRole] = useState('Super Administrator');
   const [showAdminLoginModal, setShowAdminLoginModal] = useState(false);
+
+  // Cloud Database Sync State (Firebase Firestore)
+  const [cloudSyncStatus, setCloudSyncStatus] = useState(isCloudConfigured() ? 'connecting' : 'local');
+  const [showCloudConfigModal, setShowCloudConfigModal] = useState(false);
 
   // Hash listener for #admin direct URL navigation
   useEffect(() => {
@@ -152,6 +167,45 @@ export const AppProvider = ({ children }) => {
     };
   }, []);
 
+  // Real-Time Firebase Firestore Cloud Synchronization Across Multiple Devices
+  useEffect(() => {
+    if (!isCloudConfigured()) {
+      setCloudSyncStatus('local');
+      return;
+    }
+
+    setCloudSyncStatus('connecting');
+    const db = initFirebase();
+    if (!db) {
+      setCloudSyncStatus('error');
+      return;
+    }
+
+    // Seed default tokens if remote collection is empty
+    seedCloudTokensIfEmpty(INITIAL_TOKENS);
+
+    // Subscribe to live Firestore changes
+    const unsubscribe = subscribeToCloudTokens(
+      (cloudTokens) => {
+        if (Array.isArray(cloudTokens) && cloudTokens.length > 0) {
+          setTokens(cloudTokens);
+          saveTokensToStorage(cloudTokens);
+        }
+        setCloudSyncStatus('connected');
+      },
+      (err) => {
+        console.warn('Firestore live sync error (staying on local storage):', err);
+        setCloudSyncStatus('error');
+      }
+    );
+
+    return () => {
+      if (typeof unsubscribe === 'function') {
+        unsubscribe();
+      }
+    };
+  }, []);
+
   // Apply accessibility classes to body
   useEffect(() => {
     document.body.classList.remove('font-lg', 'font-xl', 'high-contrast');
@@ -258,6 +312,11 @@ export const AppProvider = ({ children }) => {
     setTokens(updatedTokens);
     saveTokensToStorage(updatedTokens);
 
+    // Sync directly to Firebase Firestore Cloud
+    if (isCloudConfigured()) {
+      saveTokenToCloud(newToken);
+    }
+
     // Increment location issued count
     const updatedLocs = locations.map(l => {
       if (l.id === loc.id) {
@@ -288,6 +347,14 @@ export const AppProvider = ({ children }) => {
     setTokens(updated);
     saveTokensToStorage(updated);
 
+    if (isCloudConfigured()) {
+      updateTokenInCloud(tokenId, {
+        status: 'Verified',
+        docVerified: true,
+        verificationNotes: 'Official document reviewed and approved by Verification Officer.'
+      });
+    }
+
     if (currentPassToken && (currentPassToken.id === tokenId || currentPassToken.tokenNumber === tokenId)) {
       setCurrentPassToken(prev => ({ ...prev, status: 'Verified', docVerified: true }));
     }
@@ -309,6 +376,14 @@ export const AppProvider = ({ children }) => {
     setTokens(updated);
     saveTokensToStorage(updated);
 
+    if (isCloudConfigured()) {
+      updateTokenInCloud(tokenId, {
+        status: 'Declined',
+        docVerified: false,
+        verificationNotes: `Declined by Officer: ${reason}`
+      });
+    }
+
     if (currentPassToken && (currentPassToken.id === tokenId || currentPassToken.tokenNumber === tokenId)) {
       setCurrentPassToken(prev => ({ ...prev, status: 'Declined', docVerified: false }));
     }
@@ -324,6 +399,10 @@ export const AppProvider = ({ children }) => {
     });
     setTokens(updated);
     saveTokensToStorage(updated);
+
+    if (isCloudConfigured()) {
+      updateTokenInCloud(tokenId, { status: newStatus });
+    }
 
     if (currentPassToken && (currentPassToken.id === tokenId || currentPassToken.tokenNumber === tokenId)) {
       setCurrentPassToken(prev => ({ ...prev, status: newStatus }));
@@ -407,6 +486,13 @@ export const AppProvider = ({ children }) => {
         timeSlots: TIME_SLOTS,
         categories: CATEGORIES,
         assistanceTypes: ASSISTANCE_TYPES,
+        cloudSyncStatus,
+        isCloudActive: cloudSyncStatus === 'connected',
+        showCloudConfigModal,
+        setShowCloudConfigModal,
+        setCustomFirebaseConfig,
+        clearCustomFirebaseConfig,
+        getActiveFirebaseConfig,
         calculateAge,
         validateEligibility,
         issueToken,

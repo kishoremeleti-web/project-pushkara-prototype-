@@ -10,6 +10,7 @@ import { TokenTracker } from './components/token/TokenTracker';
 import { LocationsList } from './components/locations/LocationsList';
 import { AdminDashboard } from './components/admin/AdminDashboard';
 import { AdminLoginModal } from './components/admin/AdminLoginModal';
+import { CloudConfigModal } from './components/common/CloudConfigModal';
 import { HelpPage } from './components/help/HelpPage';
 import { Lock, ShieldCheck, KeyRound, AlertCircle, User } from 'lucide-react';
 
@@ -26,7 +27,9 @@ export function App() {
       'Z7%hR2#kM9',
       'd4$Vw8!L1q'
     ],
-    isPortAdmin 
+    isPortAdmin,
+    showCloudConfigModal,
+    setShowCloudConfigModal
   } = useApp();
 
   const [portalUsername, setPortalUsername] = useState('');
@@ -191,6 +194,12 @@ export function App() {
 
       {/* Admin Login Dialog Modal */}
       <AdminLoginModal />
+
+      {/* Real-time Cloud Config Modal */}
+      <CloudConfigModal 
+        isOpen={showCloudConfigModal} 
+        onClose={() => setShowCloudConfigModal(false)} 
+      />
     </div>
   );
 }
