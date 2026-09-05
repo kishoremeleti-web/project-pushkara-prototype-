@@ -332,12 +332,26 @@ export const AppProvider = ({ children }) => {
 
   // Reset to initial demo tokens dataset
   const resetDemoData = () => {
-    setTokens(INITIAL_TOKENS);
-    setLocations(LOCATIONS);
     localStorage.removeItem('pushkaralu_tokens');
     localStorage.removeItem('pushkaralu_locations');
+    setTokens(INITIAL_TOKENS);
+    setLocations(LOCATIONS);
     saveTokensToStorage(INITIAL_TOKENS);
     saveLocationsToStorage(LOCATIONS);
+  };
+
+  // Clear all verification history (reverts all tokens to fresh Pending queue)
+  const clearVerificationHistory = () => {
+    localStorage.removeItem('pushkaralu_tokens');
+    const freshTokens = INITIAL_TOKENS.map(t => ({
+      ...t,
+      status: 'Pending',
+      docVerified: false,
+      verificationCode: null,
+      verificationNotes: 'Application submitted. Awaiting Document Review by Verification Officer.'
+    }));
+    setTokens(freshTokens);
+    saveTokensToStorage(freshTokens);
   };
 
   // Find token by query (token ID or mobile number)
@@ -400,6 +414,7 @@ export const AppProvider = ({ children }) => {
         declineToken,
         updateTokenStatus,
         resetDemoData,
+        clearVerificationHistory,
         findToken,
         navigateToRegister,
         navigateToTracker

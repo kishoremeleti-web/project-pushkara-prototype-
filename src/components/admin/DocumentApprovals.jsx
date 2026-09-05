@@ -25,7 +25,7 @@ import {
 import { DigiTokenCard } from '../token/DigiTokenCard';
 
 export const DocumentApprovals = () => {
-  const { tokens, locations, approveToken, declineToken, issueToken } = useApp();
+  const { tokens, locations, approveToken, declineToken, issueToken, clearVerificationHistory } = useApp();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('All'); // 'All' | 'Pending' | 'Verified' | 'Declined'
   const [categoryFilter, setCategoryFilter] = useState('All');
@@ -287,6 +287,23 @@ export const DocumentApprovals = () => {
               <option value="senior">Senior Citizen 70+</option>
               <option value="special">Special Assistance</option>
             </select>
+
+            <button
+              type="button"
+              className="btn btn-secondary"
+              style={{ fontSize: '0.8rem', padding: '0.45rem 0.85rem' }}
+              onClick={() => {
+                if (window.confirm('Clear all verification history and reset all tokens to clean pending queue?')) {
+                  clearVerificationHistory();
+                  showFeedbackToast('All verification history cleared. Queue reset to clean initial state.');
+                }
+              }}
+              title="Clear all approvals and reset verification history"
+              id="clear-verification-history-btn"
+            >
+              <RotateCcw size={14} />
+              <span>Clear History</span>
+            </button>
           </div>
         </div>
 

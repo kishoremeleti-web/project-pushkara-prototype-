@@ -1,4 +1,4 @@
-// Official Initial Pushkaralu Tokens Dataset
+// Official Initial Pushkaralu Tokens Dataset — Fresh Clean Verification State
 export const INITIAL_TOKENS = [
   {
     id: 'ANT-042',
@@ -18,14 +18,14 @@ export const INITIAL_TOKENS = [
     date: '15 August 2026',
     timeSlot: '8:00 AM – 8:30 AM',
     slotId: 'slot-05',
-    status: 'Verified',
+    status: 'Pending',
     issuedAt: '2026-08-15T06:30:00.000Z',
     companionsAllowed: 1,
     docType: 'Aadhaar – Demo Verification',
     fileName: 'Aadhaar_Suryanarayana_1952.pdf',
-    docVerified: true,
-    verificationCode: 'VER-AP-48201',
-    verificationNotes: 'Official document reviewed and approved by Verification Officer.'
+    docVerified: false,
+    verificationCode: null,
+    verificationNotes: 'Application submitted. Awaiting Document Review by Verification Officer.'
   },
   {
     id: 'RAZ-015',
@@ -45,14 +45,14 @@ export const INITIAL_TOKENS = [
     date: '15 August 2026',
     timeSlot: '7:00 AM – 7:30 AM',
     slotId: 'slot-03',
-    status: 'Verified',
+    status: 'Pending',
     issuedAt: '2026-08-15T06:45:00.000Z',
     companionsAllowed: 1,
     docType: 'Birth Certificate – Demo Verification',
     fileName: 'Birth_Certificate_Reyansh.pdf',
-    docVerified: true,
-    verificationCode: 'VER-AP-31902',
-    verificationNotes: 'Official birth proof verified.'
+    docVerified: false,
+    verificationCode: null,
+    verificationNotes: 'Application submitted. Awaiting Document Review by Verification Officer.'
   },
   {
     id: 'MUK-007',
@@ -72,14 +72,14 @@ export const INITIAL_TOKENS = [
     date: '15 August 2026',
     timeSlot: '7:30 AM – 8:00 AM',
     slotId: 'slot-04',
-    status: 'Verified',
+    status: 'Pending',
     issuedAt: '2026-08-15T07:00:00.000Z',
     companionsAllowed: 1,
     docType: 'Disability Certificate – Demo Verification',
     fileName: 'Disability_Cert_Venkatesh.pdf',
-    docVerified: true,
-    verificationCode: 'VER-AP-75219',
-    verificationNotes: 'Special mobility ramp clearance granted.'
+    docVerified: false,
+    verificationCode: null,
+    verificationNotes: 'Application submitted. Awaiting Document Review by Verification Officer.'
   },
   {
     id: 'APP-009',
@@ -105,7 +105,7 @@ export const INITIAL_TOKENS = [
     docType: 'Senior Citizen Card – Demo Verification',
     fileName: 'Senior_ID_Lakshmi.pdf',
     docVerified: false,
-    verificationCode: 'VER-AP-90412',
+    verificationCode: null,
     verificationNotes: 'Application submitted. Awaiting Document Review by Verification Officer.'
   },
   {
@@ -126,14 +126,14 @@ export const INITIAL_TOKENS = [
     date: '15 August 2026',
     timeSlot: '8:30 AM – 9:00 AM',
     slotId: 'slot-06',
-    status: 'Used',
+    status: 'Pending',
     issuedAt: '2026-08-15T06:00:00.000Z',
     companionsAllowed: 1,
     docType: 'Aadhaar Child Card – Demo Verification',
     fileName: 'Aadhaar_Ananya_2022.pdf',
-    docVerified: true,
-    verificationCode: 'VER-AP-18934',
-    verificationNotes: 'Gate entry completed with guardian.'
+    docVerified: false,
+    verificationCode: null,
+    verificationNotes: 'Application submitted. Awaiting Document Review by Verification Officer.'
   },
   {
     id: 'DIN-003',
@@ -159,7 +159,7 @@ export const INITIAL_TOKENS = [
     docType: 'Medical Assessment – Demo Verification',
     fileName: 'Medical_Doc_Raju.pdf',
     docVerified: false,
-    verificationCode: 'VER-AP-62180',
+    verificationCode: null,
     verificationNotes: 'Application submitted. Awaiting Document Review by Verification Officer.'
   }
 ];

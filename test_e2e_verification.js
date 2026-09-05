@@ -122,7 +122,7 @@ assert(VALID_ADMIN_PASSCODES.includes('admin'), 'Passcode "admin" is valid');
 // Check Document Approvals Queue
 const pendingList = currentTokens.filter(t => t.status === 'Pending');
 console.log(`Pending Tokens Count in Admin Queue: ${pendingList.length}`);
-assert(pendingList.length === 3, 'Admin queue has 3 pending tokens (APP-009, DIN-003, and new ANT-043)');
+assert(pendingList.length === 7, 'Admin queue has 7 pending tokens in clean unverified state (including new ANT-043)');
 assert(pendingList[0].id === 'ANT-043', 'Newly submitted application ANT-043 is at top of Admin queue');
 
 // 4. Officer Inspects the Document Proof
@@ -158,7 +158,7 @@ console.log(`Approved Token ID: ${verifiedToken.tokenNumber}, Status: ${verified
 
 assert(verifiedToken.status === 'Verified', 'Token status transitioned from Pending to Verified');
 assert(verifiedToken.docVerified === true, 'Token docVerified is true');
-assert(currentTokens.filter(t => t.status === 'Pending').length === 2, 'Pending queue count reduced to 2');
+assert(currentTokens.filter(t => t.status === 'Pending').length === 6, 'Pending queue count reduced from 7 to 6 upon approval');
 
 // 6. Pilgrim Token Tracker & Gate Security Scan
 console.log('\n--- Step 5: Gate Scanner & Check-in Verification ---');
