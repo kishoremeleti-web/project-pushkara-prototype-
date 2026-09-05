@@ -1,6 +1,6 @@
 import React from 'react';
 import { useApp } from '../../context/AppContext';
-import { User, Calendar, Phone, HeartHandshake, AlertCircle, CheckCircle, Info, ShieldCheck, Sparkles } from 'lucide-react';
+import { User, Calendar, Phone, HeartHandshake, AlertCircle, CheckCircle2, Info, ShieldCheck, Sparkles } from 'lucide-react';
 
 export const PilgrimForm = ({ 
   formData, 
