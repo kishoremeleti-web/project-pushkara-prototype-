@@ -14,7 +14,7 @@ export const CategoryCards = () => {
   const { navigateToRegister } = useApp();
 
   return (
-    <section className="section section-bg-white" id="priority-categories">
+    <section className="section section-priority-cards" id="priority-categories">
       <div className="container">
         <div className="section-header">
           <span className="section-tag">Sanctioned Categories</span>

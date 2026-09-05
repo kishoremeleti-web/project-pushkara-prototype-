@@ -39,7 +39,7 @@ export const HowItWorks = () => {
   ];
 
   return (
-    <section className="section" style={{ backgroundColor: '#F8FAF9' }}>
+    <section className="section section-how-it-works" id="how-it-works">
       <div className="container">
         <div className="section-header">
           <span className="section-tag">Standard Operating Procedure</span>
