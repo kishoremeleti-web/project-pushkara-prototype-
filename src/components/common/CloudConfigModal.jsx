@@ -75,7 +75,7 @@ export const CloudConfigModal = ({ isOpen, onClose }) => {
       apiKey: apiKey.trim(),
       projectId: projectId.trim(),
       authDomain: authDomain.trim() || `${projectId.trim()}.firebaseapp.com`,
-      storageBucket: `${projectId.trim()}.appspot.com`,
+      storageBucket: `${projectId.trim()}.firebasestorage.app`,
       messagingSenderId: messagingSenderId.trim(),
       appId: appId.trim()
     };

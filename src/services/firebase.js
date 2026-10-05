@@ -1,4 +1,4 @@
-import { initializeApp, getApps, getApp } from 'firebase/app';
+import { initializeApp, getApps } from 'firebase/app';
 import { 
   getFirestore, 
   collection, 
@@ -55,10 +55,10 @@ export const initFirebase = () => {
 
   try {
     const config = getActiveFirebaseConfig();
-    const appName = '[DEFAULT]';
     
     if (getApps().length > 0) {
-      firebaseApp = getApp(appName);
+      // Reuse the existing initialized app (avoids duplicate app errors)
+      firebaseApp = getApps()[0];
     } else {
       firebaseApp = initializeApp(config);
     }
