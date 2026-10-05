@@ -11,15 +11,16 @@ import {
   limit
 } from 'firebase/firestore';
 
-// Default project configuration from Firebase Console
+// Default project configuration — loaded exclusively from environment variables
+// Never hardcode credentials here; set VITE_FIREBASE_* in .env (local) and Vercel dashboard (production)
 const DEFAULT_FIREBASE_CONFIG = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || 'AIzaSyA_iEIp3MYyyQAeVCd197HwwxArgDvz0gU',
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || 'pushkaras-prototype.firebaseapp.com',
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || 'pushkaras-prototype',
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || 'pushkaras-prototype.firebasestorage.app',
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || '437000337218',
-  appId: import.meta.env.VITE_FIREBASE_APP_ID || '1:437000337218:web:5ab91a197819c7f6667adb',
-  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID || 'G-410QW0QB76'
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || '',
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || '',
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || '',
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || '',
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || '',
+  appId: import.meta.env.VITE_FIREBASE_APP_ID || '',
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID || ''
 };
 
 // Retrieve currently active config (checks browser localStorage override first, then env)
