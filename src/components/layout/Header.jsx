@@ -14,10 +14,7 @@ import {
   Type, 
   CheckCircle2,
   Sparkles,
-  LogOut,
-  Cloud,
-  CloudOff,
-  Loader2
+  LogOut
 } from 'lucide-react';
 
 export const Header = () => {
@@ -31,9 +28,7 @@ export const Header = () => {
     setFontScale,
     isHighContrast,
     setIsHighContrast,
-    navigateToRegister,
-    cloudSyncStatus,
-    setShowCloudConfigModal
+    navigateToRegister
   } = useApp();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -99,44 +94,6 @@ export const Header = () => {
               {isHighContrast ? 'Standard Contrast' : 'High Contrast'}
             </button>
 
-            {/* Real-Time Cloud Sync Indicator Button */}
-            <button
-              type="button"
-              className="access-btn"
-              onClick={() => setShowCloudConfigModal(true)}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '5px',
-                padding: '0.2rem 0.65rem',
-                borderRadius: '999px',
-                fontSize: '0.72rem',
-                fontWeight: '700',
-                backgroundColor: cloudSyncStatus === 'connected' ? 'rgba(22, 101, 52, 0.12)' : 'rgba(217, 119, 6, 0.12)',
-                color: cloudSyncStatus === 'connected' ? '#166534' : '#B45309',
-                borderColor: cloudSyncStatus === 'connected' ? '#86EFAC' : '#FDE68A',
-                marginLeft: '0.6rem'
-              }}
-              title="Cloud Sync Status (Firebase Firestore) – Click to configure or view status"
-              id="header-cloud-sync-pill"
-            >
-              {cloudSyncStatus === 'connected' ? (
-                <>
-                  <span style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: '#16A34A', display: 'inline-block' }} />
-                  <span>Cloud Synced</span>
-                </>
-              ) : cloudSyncStatus === 'connecting' ? (
-                <>
-                  <Loader2 size={11} className="verify-spinner" />
-                  <span>Connecting...</span>
-                </>
-              ) : (
-                <>
-                  <span style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: '#D97706', display: 'inline-block' }} />
-                  <span>Cloud: Local Mode</span>
-                </>
-              )}
-            </button>
           </div>
         </div>
       </div>
