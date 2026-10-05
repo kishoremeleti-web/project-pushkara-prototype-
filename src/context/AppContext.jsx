@@ -39,6 +39,7 @@ export const AppProvider = ({ children }) => {
 
   // Cloud Database Sync State (Firebase Firestore)
   const [cloudSyncStatus, setCloudSyncStatus] = useState(isCloudConfigured() ? 'connecting' : 'local');
+  const [showCloudConfigModal, setShowCloudConfigModal] = useState(false);
 
   // Hash listener for #admin direct URL navigation
   useEffect(() => {
@@ -487,6 +488,11 @@ export const AppProvider = ({ children }) => {
         assistanceTypes: ASSISTANCE_TYPES,
         cloudSyncStatus,
         isCloudActive: cloudSyncStatus === 'connected',
+        showCloudConfigModal,
+        setShowCloudConfigModal,
+        setCustomFirebaseConfig,
+        clearCustomFirebaseConfig,
+        getActiveFirebaseConfig,
         calculateAge,
         validateEligibility,
         issueToken,

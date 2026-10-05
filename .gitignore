@@ -24,9 +24,6 @@ dist-ssr
 *.sw?
 
 # Firebase & Vercel
-.env
-.env.local
-.env.production
 .firebase
 .vercel
 firebase-debug.log*
