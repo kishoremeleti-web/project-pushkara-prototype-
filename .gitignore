@@ -29,3 +29,9 @@ dist-ssr
 firebase-debug.log*
 
 .vercel
+
+# Environment files
+.env
+.env.local
+.env.*
+!.env.example
